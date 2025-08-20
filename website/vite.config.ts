@@ -66,11 +66,11 @@ export default defineConfig({
   // 添加路径别名
   resolve: {
     alias: {
-      '@': '/src',
-      '@components': '/src/components',
-      '@pages': '/src/pages',
-      '@utils': '/src/utils',
-      '@services': '/src/services'
+      '@': './src',
+      '@components': './src/components',
+      '@pages': './src/pages',
+      '@utils': './src/utils',
+      '@services': './src/services'
     }
   }
 })

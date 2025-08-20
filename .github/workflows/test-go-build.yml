@@ -1,0 +1,80 @@
+name: Test Go Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-go-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+          
+      - name: Check Go version
+        run: |
+          go version
+          go env
+          
+      - name: Check file structure
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "Files in current directory:"
+          ls -la
+          echo "Files in cmd directory:"
+          ls -la cmd/
+          echo "Files in internal directory:"
+          ls -la internal/
+          echo "main.go content:"
+          cat main.go
+          
+      - name: Go mod tidy
+        run: go mod tidy
+        
+      - name: Go mod verify
+        run: go mod verify
+        
+      - name: Run tests
+        run: go test -v ./...
+        
+      - name: Build for current platform
+        run: |
+          go build -o gmail-oauth-proxy-test main.go
+          ls -la gmail-oauth-proxy-test
+          file gmail-oauth-proxy-test
+          
+      - name: Build for multiple platforms
+        run: |
+          echo "Building for Linux AMD64..."
+          GOOS=linux GOARCH=amd64 go build -o gmail-oauth-proxy-linux-amd64 main.go
+          
+          echo "Building for Windows AMD64..."
+          GOOS=windows GOARCH=amd64 go build -o gmail-oauth-proxy-windows-amd64.exe main.go
+          
+          echo "Building for macOS AMD64..."
+          GOOS=darwin GOARCH=amd64 go build -o gmail-oauth-proxy-darwin-amd64 main.go
+          
+          echo "Building for macOS ARM64..."
+          GOOS=darwin GOARCH=arm64 go build -o gmail-oauth-proxy-darwin-arm64 main.go
+          
+          echo "Build artifacts:"
+          ls -la gmail-oauth-proxy-*
+          
+      - name: Test GoReleaser build
+        run: |
+          # Install GoReleaser
+          curl -sfL https://goreleaser.com/static/run | bash -s -- --version
+          
+          # Add GoReleaser to PATH
+          export PATH="$HOME/.local/bin:$PATH"
+          
+          # Test build without release
+          goreleaser build --snapshot --clean --single-target
+          
+          echo "GoReleaser build artifacts:"
+          ls -la dist/ 

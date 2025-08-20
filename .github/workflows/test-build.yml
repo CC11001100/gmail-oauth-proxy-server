@@ -1,89 +1,50 @@
-# GitHub Actions workflow for testing builds
 name: Test Build
 
-# Trigger on push and pull request
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+  workflow_dispatch:
 
-# Environment variables
-env:
-  GO_VERSION: '1.22'
-
-# Jobs
 jobs:
-  # Test build job
   test-build:
-    name: Test Build
     runs-on: ubuntu-latest
     
     steps:
-      # Checkout code
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          
-      # Setup Go
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ env.GO_VERSION }}
-          
-      # Show Go version and environment
-      - name: Show Go version
-        run: |
-          go version
-          go env
-          echo "Current directory: $(pwd)"
-          echo "Directory contents:"
-          ls -la
-          
-      # Cache Go modules
-      - name: Cache Go modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-            
-      # Run tests
-      - name: Run tests
-        run: go test -v ./...
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: website/package-lock.json
         
-      # Check GoReleaser config
-      - name: Check GoReleaser config
-        uses: goreleaser/goreleaser-action@v6
-        with:
-          distribution: goreleaser
-          version: '~> v2'
-          args: check
-          
-      # Show GoReleaser version and test manual build
-      - name: Test manual build
-        run: |
-          echo "Testing manual build..."
-          go build -v -o gmail-oauth-proxy .
-          ./gmail-oauth-proxy version
-          echo "Manual build successful!"
-          
-      # Test build with GoReleaser
-      - name: Test build
-        uses: goreleaser/goreleaser-action@v6
-        with:
-          distribution: goreleaser
-          version: '~> v2'
-          args: build --snapshot --clean
-          
-      # Upload build artifacts
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifacts
-          path: dist/
-          retention-days: 7
+    - name: Check file structure
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Files in current directory:"
+        ls -la
+        echo "Files in website directory:"
+        ls -la website/
+        echo "Files in website/src directory:"
+        ls -la website/src/
+        echo "index.html content:"
+        cat website/index.html
+        
+    - name: Install dependencies
+      working-directory: ./website
+      run: npm ci
+      
+    - name: Build website
+      working-directory: ./website
+      run: npm run build
+      
+    - name: List files
+      working-directory: ./website
+      run: |
+        echo "Current directory: $(pwd)"
+        echo "Files in current directory:"
+        ls -la
+        echo "Files in parent directory:"
+        ls -la ..
+        echo "Files in root:"
+        ls -la ../..

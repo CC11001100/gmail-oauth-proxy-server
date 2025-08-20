@@ -5,8 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/gmail-oauth-proxy-server/',
-  // 指定入口文件
-  root: '.',
+  // 明确指定根目录
+  root: process.cwd(),
   // 端口配置 - 严禁修改端口，必须使用57622端口
   server: {
     port: 57622,
@@ -39,9 +39,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    // 添加路径重写规则
+    // 确保入口文件能被找到
     rollupOptions: {
-      input: 'index.html',
+      input: './index.html',
       output: {
         // 确保资源路径正确
         assetFileNames: (assetInfo) => {

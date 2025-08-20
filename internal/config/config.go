@@ -19,6 +19,11 @@ type Config struct {
 
 // Load 加载配置
 func Load() (*Config, error) {
+	return LoadWithAutoGenerate(false)
+}
+
+// LoadWithAutoGenerate 加载配置，支持自动生成API Key
+func LoadWithAutoGenerate(autoGenerate bool) (*Config, error) {
 	// 设置配置文件名和路径
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
@@ -55,6 +60,29 @@ func Load() (*Config, error) {
 	var config Config
 	if err := viper.Unmarshal(&config); err != nil {
 		return nil, err
+	}
+
+	// 如果没有API Key且启用自动生成，尝试从缓存获取或生成新的
+	if config.APIKey == "" && autoGenerate {
+		cache, err := NewConfigCache()
+		if err != nil {
+			return nil, fmt.Errorf("failed to create config cache: %w", err)
+		}
+
+		apiKey, isNew, err := cache.GetOrGenerateAPIKey()
+		if err != nil {
+			return nil, fmt.Errorf("failed to get or generate API key: %w", err)
+		}
+
+		config.APIKey = apiKey
+
+		// 如果是新生成的key，给用户提示
+		if isNew {
+			fmt.Printf("🔑 已生成新的API Key: %s****%s\n", apiKey[:8], apiKey[len(apiKey)-4:])
+			fmt.Printf("📁 API Key已保存到: %s\n", cache.GetCacheFile())
+		} else {
+			fmt.Printf("🔑 使用缓存的API Key: %s****%s\n", apiKey[:8], apiKey[len(apiKey)-4:])
+		}
 	}
 
 	// 验证鉴权配置（至少需要配置一种鉴权方式）

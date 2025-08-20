@@ -25,10 +25,14 @@ var configCmd = &cobra.Command{
 子命令:
   show      显示当前配置信息
   validate  验证配置文件有效性
+  cache     管理配置缓存
+  clear     清除配置缓存
 
 示例:
   gmail-oauth-proxy config show       # 显示当前配置
-  gmail-oauth-proxy config validate   # 验证配置文件`,
+  gmail-oauth-proxy config validate   # 验证配置文件
+  gmail-oauth-proxy config cache      # 显示缓存信息
+  gmail-oauth-proxy config clear      # 清除缓存`,
 }
 
 // configShowCmd represents the config show command
@@ -64,10 +68,44 @@ var configValidateCmd = &cobra.Command{
 	Run: validateConfig,
 }
 
+// configCacheCmd represents the config cache command
+var configCacheCmd = &cobra.Command{
+	Use:   "cache",
+	Short: "显示配置缓存信息",
+	Long: color.New(color.FgMagenta).Sprint("💾 显示配置缓存信息") + `
+
+显示当前配置缓存的详细信息，包括：
+• 缓存文件位置
+• 缓存的API Key信息
+• 创建时间和最后使用时间
+• 缓存文件状态
+
+这个命令可以帮助您了解自动生成的API Key的存储情况。`,
+	Run: showCacheInfo,
+}
+
+// configClearCmd represents the config clear command
+var configClearCmd = &cobra.Command{
+	Use:   "clear",
+	Short: "清除配置缓存",
+	Long: color.New(color.FgRed).Sprint("🗑️  清除配置缓存") + `
+
+清除所有缓存的配置信息，包括：
+• 自动生成的API Key
+• 缓存的配置文件
+
+清除后，下次启动服务器时将重新生成新的API Key。
+
+注意：此操作不可逆，请谨慎使用。`,
+	Run: clearCache,
+}
+
 func init() {
 	rootCmd.AddCommand(configCmd)
 	configCmd.AddCommand(configShowCmd)
 	configCmd.AddCommand(configValidateCmd)
+	configCmd.AddCommand(configCacheCmd)
+	configCmd.AddCommand(configClearCmd)
 }
 
 func showConfig(cmd *cobra.Command, args []string) {
@@ -145,6 +183,25 @@ func showConfig(cmd *cobra.Command, args []string) {
 			color.White("  • %s: %s", envVar, color.GreenString(value))
 		} else {
 			color.White("  • %s: %s", envVar, color.RedString("未设置"))
+		}
+	}
+
+	// 显示缓存信息
+	color.Green("\n💾 配置缓存信息:")
+	cache, err := config.NewConfigCache()
+	if err != nil {
+		color.White("  • 缓存状态: %s", color.RedString("无法访问"))
+		color.White("  • 错误信息: %s", color.RedString(err.Error()))
+	} else if !cache.CacheExists() {
+		color.White("  • 缓存状态: %s", color.YellowString("不存在"))
+		color.White("  • 缓存位置: %s", color.BlueString(cache.GetCacheFile()))
+	} else {
+		color.White("  • 缓存状态: %s", color.GreenString("存在"))
+		color.White("  • 缓存位置: %s", color.BlueString(cache.GetCacheFile()))
+
+		if cacheInfo, err := cache.GetCacheInfo(); err == nil {
+			color.White("  • 缓存创建: %s", color.MagentaString(cacheInfo.CreatedAt.Format("2006-01-02 15:04:05")))
+			color.White("  • 最后使用: %s", color.MagentaString(cacheInfo.LastUsed.Format("2006-01-02 15:04:05")))
 		}
 	}
 
@@ -248,5 +305,122 @@ func validateConfig(cmd *cobra.Command, args []string) {
 		if len(cfg.IPWhitelist) > 0 {
 			color.White("   • IP白名单: %d个规则", len(cfg.IPWhitelist))
 		}
+
+		// 验证缓存配置
+		color.Cyan("\n💾 缓存验证:")
+		cache, err := config.NewConfigCache()
+		if err != nil {
+			color.White("   • 缓存访问: %s", color.RedString("失败"))
+			color.White("   • 错误信息: %s", color.RedString(err.Error()))
+		} else if !cache.CacheExists() {
+			color.White("   • 缓存状态: %s", color.YellowString("不存在"))
+			color.White("   • 说明: 首次启动时将自动创建")
+		} else {
+			if err := cache.ValidateCache(); err != nil {
+				color.White("   • 缓存验证: %s", color.RedString("失败"))
+				color.White("   • 错误信息: %s", color.RedString(err.Error()))
+				errors = append(errors, fmt.Sprintf("缓存文件验证失败: %v", err))
+			} else {
+				color.White("   • 缓存验证: %s", color.GreenString("通过"))
+			}
+		}
 	}
+}
+
+func showCacheInfo(cmd *cobra.Command, args []string) {
+	color.Cyan("💾 正在加载配置缓存信息...")
+
+	// 创建配置缓存管理器
+	cache, err := config.NewConfigCache()
+	if err != nil {
+		color.Red("❌ 创建配置缓存管理器失败: %v", err)
+		return
+	}
+
+	// 检查缓存是否存在
+	if !cache.CacheExists() {
+		color.Yellow("📭 配置缓存不存在")
+		color.White("   • 缓存目录: %s", color.BlueString(cache.GetCacheDir()))
+		color.White("   • 缓存文件: %s", color.BlueString(cache.GetCacheFile()))
+		color.White("   • 状态: %s", color.RedString("不存在"))
+		color.Cyan("\n💡 提示: 启动服务器时将自动生成API Key并创建缓存")
+		return
+	}
+
+	// 获取缓存信息
+	cacheInfo, err := cache.GetCacheInfo()
+	if err != nil {
+		color.Red("❌ 读取缓存信息失败: %v", err)
+		return
+	}
+
+	// 显示缓存信息
+	color.Green("\n📁 缓存文件信息:")
+	color.White("  • 缓存目录: %s", color.BlueString(cache.GetCacheDir()))
+	color.White("  • 缓存文件: %s", color.BlueString(cache.GetCacheFile()))
+	color.White("  • 文件状态: %s", color.GreenString("存在"))
+
+	color.Green("\n🔑 API Key信息:")
+	// 脱敏显示API Key
+	apiKeyDisplay := "****"
+	if len(cacheInfo.APIKey) > 8 {
+		apiKeyDisplay = fmt.Sprintf("%s****%s", cacheInfo.APIKey[:8], cacheInfo.APIKey[len(cacheInfo.APIKey)-4:])
+	}
+	color.White("  • API Key: %s", color.GreenString(apiKeyDisplay))
+	color.White("  • 版本: %s", color.CyanString(cacheInfo.Version))
+	color.White("  • 描述: %s", color.YellowString(cacheInfo.Description))
+
+	color.Green("\n⏰ 时间信息:")
+	color.White("  • 创建时间: %s", color.MagentaString(cacheInfo.CreatedAt.Format("2006-01-02 15:04:05")))
+	color.White("  • 最后使用: %s", color.MagentaString(cacheInfo.LastUsed.Format("2006-01-02 15:04:05")))
+
+	// 验证缓存完整性
+	if err := cache.ValidateCache(); err != nil {
+		color.Red("\n⚠️  缓存验证失败: %v", err)
+	} else {
+		color.Green("\n✅ 缓存验证通过")
+	}
+
+	color.Cyan("\n💾 缓存信息显示完成")
+}
+
+func clearCache(cmd *cobra.Command, args []string) {
+	color.Cyan("🗑️  正在清除配置缓存...")
+
+	// 创建配置缓存管理器
+	cache, err := config.NewConfigCache()
+	if err != nil {
+		color.Red("❌ 创建配置缓存管理器失败: %v", err)
+		return
+	}
+
+	// 检查缓存是否存在
+	if !cache.CacheExists() {
+		color.Yellow("📭 配置缓存不存在，无需清除")
+		color.White("   • 缓存文件: %s", color.BlueString(cache.GetCacheFile()))
+		return
+	}
+
+	// 显示将要清除的信息
+	color.Yellow("\n⚠️  即将清除以下缓存:")
+	color.White("   • 缓存文件: %s", color.BlueString(cache.GetCacheFile()))
+
+	// 获取缓存信息用于显示
+	if cacheInfo, err := cache.GetCacheInfo(); err == nil {
+		apiKeyDisplay := "****"
+		if len(cacheInfo.APIKey) > 8 {
+			apiKeyDisplay = fmt.Sprintf("%s****%s", cacheInfo.APIKey[:8], cacheInfo.APIKey[len(cacheInfo.APIKey)-4:])
+		}
+		color.White("   • API Key: %s", color.RedString(apiKeyDisplay))
+		color.White("   • 创建时间: %s", color.RedString(cacheInfo.CreatedAt.Format("2006-01-02 15:04:05")))
+	}
+
+	// 执行清除操作
+	if err := cache.ClearCache(); err != nil {
+		color.Red("❌ 清除缓存失败: %v", err)
+		return
+	}
+
+	color.Green("✅ 配置缓存已成功清除")
+	color.Cyan("💡 下次启动服务器时将重新生成新的API Key")
 }

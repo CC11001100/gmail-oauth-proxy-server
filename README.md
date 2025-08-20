@@ -42,9 +42,34 @@ OAuth token交换端点
 
 ## 配置
 
+### 🔑 自动API Key生成
+
+如果启动服务器时没有配置API Key，系统将自动生成一个安全的API Key并保存到用户配置缓存中：
+
+- **缓存位置**: `~/.gmail-oauth-proxy/config.json`
+- **自动生成**: 首次启动时自动创建
+- **持久化**: 后续启动时自动使用缓存的API Key
+- **安全性**: 使用加密随机数生成，文件权限设置为600
+
+### 配置管理命令
+
+```bash
+# 显示当前配置（包括缓存信息）
+./gmail-oauth-proxy config show
+
+# 验证配置有效性
+./gmail-oauth-proxy config validate
+
+# 显示配置缓存信息
+./gmail-oauth-proxy config cache
+
+# 清除配置缓存（将重新生成API Key）
+./gmail-oauth-proxy config clear
+```
+
 ### 环境变量
 
-- `OAUTH_PROXY_API_KEY`: API密钥（可选，与IP白名单至少配置一个）
+- `OAUTH_PROXY_API_KEY`: API密钥（可选，未设置时自动生成）
 - `OAUTH_PROXY_IP_WHITELIST`: IP白名单，逗号分隔（可选）
 - `OAUTH_PROXY_PORT`: 服务端口（默认: 8080）
 - `OAUTH_PROXY_ENVIRONMENT`: 运行环境（默认: development）

@@ -6,6 +6,7 @@ import (
 	"gmail-oauth-proxy-server/internal/logger"
 	"gmail-oauth-proxy-server/internal/middleware"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/fatih/color"
@@ -69,8 +70,13 @@ func runServer(cmd *cobra.Command, args []string) {
 	// 显示启动信息
 	color.Cyan("🔧 正在初始化Gmail OAuth代理服务器...")
 
-	// 初始化配置
-	cfg, err := config.Load()
+	// 检查是否需要自动生成API Key
+	autoGenerate := !cmd.Flags().Changed("api-key") &&
+		os.Getenv("OAUTH_PROXY_API_KEY") == "" &&
+		!viper.IsSet("api_key")
+
+	// 初始化配置，支持自动生成API Key
+	cfg, err := config.LoadWithAutoGenerate(autoGenerate)
 	if err != nil {
 		color.Red("❌ 配置加载失败: %v", err)
 		log.Fatalf("Failed to load config: %v", err)
@@ -93,11 +99,12 @@ func runServer(cmd *cobra.Command, args []string) {
 		cfg.IPWhitelist = ipWhitelist
 	}
 
-	// 验证鉴权配置
+	// 验证鉴权配置（现在应该总是有API Key，因为会自动生成）
 	if cfg.APIKey == "" && len(cfg.IPWhitelist) == 0 {
 		color.Red("❌ 未配置任何鉴权方式，请配置API Key或IP白名单")
 		color.Yellow("   • API Key: 通过 --api-key 参数或 OAUTH_PROXY_API_KEY 环境变量设置")
 		color.Yellow("   • IP白名单: 通过 --ip-whitelist 参数或 OAUTH_PROXY_IP_WHITELIST 环境变量设置")
+		color.Yellow("   • 或者重新启动服务器以自动生成API Key")
 		log.Fatal("At least one authentication method is required")
 	}
 

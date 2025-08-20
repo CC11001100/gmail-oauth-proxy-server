@@ -2,6 +2,8 @@
 
 这是 Gmail OAuth Proxy Server 项目的官方网站，使用现代化的技术栈构建。
 
+<!-- 最后更新: 2025-08-21 -->
+
 ## 🚀 技术栈
 
 - **前端框架**: React 19 + TypeScript

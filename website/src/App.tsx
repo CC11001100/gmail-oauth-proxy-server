@@ -55,15 +55,17 @@ function App() {
         return;
       }
     } else if (isCustomDomain) {
-      // 自定义域名环境：不需要基础路径，但需要处理根路径
-      if (currentPath === '/') {
-        // 在自定义域名下，根路径就是首页，不需要重定向
+      // 自定义域名环境：处理 /gmail-oauth-proxy-server 前缀的访问
+      const basePath = '/gmail-oauth-proxy-server';
+      
+      if (currentPath.startsWith(basePath)) {
+        // 用户访问了带前缀的路径，重定向到不带前缀的对应路径
+        const newPath = currentPath.replace(basePath, '') || '/';
+        navigate(newPath, { replace: true });
         return;
       }
       
-      // 在自定义域名环境下，不要去掉 /gmail-oauth-proxy-server 前缀
-      // 因为这是用户实际访问的路径，应该保持
-      // 只有在 GitHub Pages 环境下才需要处理这个前缀
+      // 其他路径正常处理，不需要重定向
     }
     // 开发环境：不需要特殊处理
   }, [location.pathname, navigate]);

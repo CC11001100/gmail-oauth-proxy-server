@@ -1,0 +1,16 @@
+# Gmail OAuth Proxy Server Configuration
+
+# 服务器端口
+port: "8080"
+
+# API Key (建议通过环境变量设置)
+# api_key: "your-secret-api-key"
+
+# 运行环境 (development/production)
+environment: "development"
+
+# 日志级别 (debug/info/warn/error)
+log_level: "info"
+
+# 请求超时时间（秒）
+timeout: 10

@@ -8,10 +8,32 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// staticIndexHandler 全局首页处理器
+var staticIndexHandler gin.HandlerFunc
+
+// staticFileHandler 全局静态文件处理器
+var staticFileHandler gin.HandlerFunc
+
+// SetStaticHandlers 设置静态文件处理器
+func SetStaticHandlers(indexHandler, fileHandler gin.HandlerFunc) {
+	staticIndexHandler = indexHandler
+	staticFileHandler = fileHandler
+}
+
 // RegisterRoutes 注册路由
 func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 	// 创建OAuth处理器
 	oauthHandler := NewOAuthHandler(cfg)
+
+	// 首页路由（不需要认证）- 返回API文档
+	if staticIndexHandler != nil {
+		r.GET("/", staticIndexHandler)
+	}
+
+	// 静态资源路由（不需要认证）
+	if staticFileHandler != nil {
+		r.GET("/static/*filepath", staticFileHandler)
+	}
 
 	// 健康检查端点（不需要认证）
 	r.GET("/health", func(c *gin.Context) {

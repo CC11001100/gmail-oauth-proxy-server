@@ -2,8 +2,8 @@
 
 [![Go Version](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Website](https://img.shields.io/badge/Website-🌐%20Live-blue.svg)](http://www.cc11001100.com/gmail-oauth-proxy-server/)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-🚀%20Modern%20Website-brightgreen.svg)](http://www.cc11001100.com/gmail-oauth-proxy-server/)
+[![Website](https://img.shields.io/badge/Website-🌐%20Live-blue.svg)](https://cc11001100.github.io/gmail-oauth-proxy-server/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-🚀%20Modern%20Website-brightgreen.svg)](https://cc11001100.github.io/gmail-oauth-proxy-server/)
 
 A Google OAuth proxy service implemented with Go and Gin framework for securely proxying OAuth token exchange requests.
 
@@ -18,7 +18,7 @@ A Google OAuth proxy service implemented with Go and Gin framework for securely 
 - ⚡ **快速加载**: 优化的性能和用户体验
 - 🔧 **在线工具**: 参数编辑器和配置生成器
 
-**访问地址**: [http://www.cc11001100.com/gmail-oauth-proxy-server/](http://www.cc11001100.com/gmail-oauth-proxy-server/)
+**访问地址**: [https://cc11001100.github.io/gmail-oauth-proxy-server/](https://cc11001100.github.io/gmail-oauth-proxy-server/)
 
 ### 🚀 本地开发网站
 
@@ -267,4 +267,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Gmail OAuth Proxy Server** - 安全、高效的 OAuth 代理服务
 
-[🌐 访问现代化官网](http://www.cc11001100.com/gmail-oauth-proxy-server/) | [📚 查看文档](http://www.cc11001100.com/gmail-oauth-proxy-server/documentation) | [💾 下载最新版本](http://www.cc11001100.com/gmail-oauth-proxy-server/download)
+[🌐 访问现代化官网](https://cc11001100.github.io/gmail-oauth-proxy-server/) | [📚 查看文档](https://cc11001100.github.io/gmail-oauth-proxy-server/documentation) | [💾 下载最新版本](https://cc11001100.github.io/gmail-oauth-proxy-server/download)

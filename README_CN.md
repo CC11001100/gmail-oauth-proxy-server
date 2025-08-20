@@ -2,6 +2,38 @@
 
 [English](README.md) | **中文**
 
+[![Website](https://img.shields.io/badge/Website-🌐%20Live-blue.svg)](https://cc11001100.github.io/gmail-oauth-proxy-server/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-🚀%20Modern%20Website-brightgreen.svg)](https://cc11001100.github.io/gmail-oauth-proxy-server/)
+
+## 🌐 现代化官方网站
+
+我们为这个项目创建了一个现代化的官方网站，包含：
+
+- 🎨 **现代化设计**: 使用 TypeScript + React + Material-UI 构建
+- 🌓 **主题切换**: 支持浅色/深色模式
+- 🌍 **国际化**: 中英文双语支持
+- 📱 **响应式设计**: 完美适配所有设备
+- ⚡ **快速加载**: 优化的性能和用户体验
+- 🔧 **在线工具**: 参数编辑器和配置生成器
+
+**访问地址**: [https://cc11001100.github.io/gmail-oauth-proxy-server/](https://cc11001100.github.io/gmail-oauth-proxy-server/)
+
+### 🚀 本地开发网站
+
+```bash
+cd website
+npm install
+npm run dev
+```
+
+### 🔨 构建网站
+
+```bash
+cd website
+npm run build
+./deploy.sh
+```
+
 一个使用Go和Gin框架实现的谷歌OAuth代理服务，用于安全地代理OAuth token交换请求。
 
 ## 功能特性
@@ -313,3 +345,9 @@ curl http://localhost:8080/health
 ## 许可证
 
 本项目采用 MIT 许可证 - 详情请参阅 [LICENSE](LICENSE) 文件。
+
+---
+
+**Gmail OAuth Proxy Server** - 安全、高效的 OAuth 代理服务
+
+[🌐 访问现代化官网](https://cc11001100.github.io/gmail-oauth-proxy-server/) | [📚 查看文档](https://cc11001100.github.io/gmail-oauth-proxy-server/documentation) | [💾 下载最新版本](https://cc11001100.github.io/gmail-oauth-proxy-server/download)

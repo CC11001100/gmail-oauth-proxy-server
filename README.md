@@ -4,12 +4,14 @@
 
 ## 功能特性
 
-- **安全认证**: 使用API Key进行请求认证
-- **HTTPS强制**: 强制使用HTTPS协议（开发环境除外）
-- **日志脱敏**: 自动脱敏敏感信息如token、secret等
-- **请求代理**: 将JSON请求转换为form-urlencoded格式并转发到Google OAuth API
-- **错误处理**: 完善的错误处理和日志记录
-- **配置管理**: 支持配置文件和环境变量
+- **🔐 安全认证**: 使用API Key进行请求认证
+- **🔒 HTTPS强制**: 强制使用HTTPS协议（开发环境除外）
+- **🛡️ 日志脱敏**: 自动脱敏敏感信息如token、secret等
+- **⚡ 请求代理**: 将JSON请求转换为form-urlencoded格式并转发到Google OAuth API
+- **🚨 错误处理**: 完善的错误处理和日志记录
+- **⚙️ 配置管理**: 支持配置文件和环境变量
+- **🎨 命令行界面**: 使用Cobra框架，支持彩色输出和子命令
+- **📊 监控工具**: 内置版本信息、配置验证等管理工具
 
 ## API规范
 
@@ -50,29 +52,97 @@ OAuth token交换端点
 
 可选的`config.yaml`文件，环境变量优先级更高。
 
-## 运行
+## 安装和使用
 
-### 开发环境
+### 安装
+
+```bash
+# 克隆项目
+git clone https://github.com/your-username/gmail-oauth-proxy-server.git
+cd gmail-oauth-proxy-server
+
+# 安装依赖
+go mod tidy
+
+# 构建
+go build -o gmail-oauth-proxy main.go
+```
+
+### 命令行使用
+
+#### 查看帮助
+```bash
+./gmail-oauth-proxy --help
+./gmail-oauth-proxy server --help
+```
+
+#### 启动服务器
+```bash
+# 设置API Key
+export OAUTH_PROXY_API_KEY="your-secret-api-key"
+
+# 使用默认配置启动
+./gmail-oauth-proxy server
+
+# 指定端口启动
+./gmail-oauth-proxy server --port 9000
+
+# 生产环境模式
+./gmail-oauth-proxy server --env production --log-level warn
+```
+
+#### 查看版本信息
+```bash
+./gmail-oauth-proxy version
+./gmail-oauth-proxy version --short
+```
+
+#### 配置管理
+```bash
+# 显示当前配置
+./gmail-oauth-proxy config show
+
+# 验证配置文件
+./gmail-oauth-proxy config validate
+```
+
+### 开发环境快速启动
 
 ```bash
 # 设置API Key
 export OAUTH_PROXY_API_KEY="your-secret-api-key"
 
-# 安装依赖
-go mod tidy
-
-# 运行服务
-go run cmd/server/main.go
+# 直接运行
+go run main.go server --verbose
 ```
 
-### 生产环境
+## 命令行选项
+
+### 全局选项
+- `--config` - 指定配置文件路径
+- `--verbose, -v` - 启用详细输出模式
+- `--no-color` - 禁用彩色输出
+
+### server 子命令选项
+- `--port, -p` - 服务器监听端口 (默认: 8080)
+- `--api-key` - API认证密钥
+- `--log-level` - 日志级别 (debug|info|warn|error)
+- `--env` - 运行环境 (development|production)
+
+### 示例命令
 
 ```bash
-# 构建
-go build -o oauth-proxy-server cmd/server/main.go
+# 启动服务器并显示详细日志
+./gmail-oauth-proxy server --verbose --log-level debug
 
-# 运行
-./oauth-proxy-server
+# 使用自定义配置文件
+./gmail-oauth-proxy --config /path/to/config.yaml server
+
+# 禁用彩色输出
+./gmail-oauth-proxy --no-color version
+
+# 验证配置
+./gmail-oauth-proxy config validate
 ```
 
 ## 健康检查

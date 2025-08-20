@@ -31,25 +31,44 @@ function App() {
     }
   }, [prefersDarkMode]);
 
-  // 处理生产环境下的路径重定向
+  // 动态检测部署环境并处理路径重定向
   useEffect(() => {
-    const isProduction = window.location.hostname === 'cc11001100.github.io';
+    const hostname = window.location.hostname;
     const currentPath = location.pathname;
     
-    if (isProduction) {
-      // 在生产环境下，如果访问根路径，重定向到基础路径
+    // 检测部署环境
+    const isGitHubPages = hostname === 'cc11001100.github.io';
+    const isCustomDomain = hostname === 'www.cc11001100.com' || hostname === 'cc11001100.com';
+    
+    if (isGitHubPages) {
+      // GitHub Pages环境：需要基础路径
+      const basePath = '/gmail-oauth-proxy-server';
+      
       if (currentPath === '/') {
-        navigate('/gmail-oauth-proxy-server/', { replace: true });
+        navigate(`${basePath}/`, { replace: true });
         return;
       }
       
-      // 如果路径不包含基础路径，重定向到正确的基础路径
-      if (!currentPath.startsWith('/gmail-oauth-proxy-server')) {
-        const targetPath = `/gmail-oauth-proxy-server${currentPath}`;
+      if (!currentPath.startsWith(basePath)) {
+        const targetPath = `${basePath}${currentPath}`;
         navigate(targetPath, { replace: true });
         return;
       }
+    } else if (isCustomDomain) {
+      // 自定义域名环境：不需要基础路径，但需要处理根路径
+      if (currentPath === '/') {
+        // 在自定义域名下，根路径就是首页，不需要重定向
+        return;
+      }
+      
+      // 如果路径以 /gmail-oauth-proxy-server 开头，需要去掉这个前缀
+      if (currentPath.startsWith('/gmail-oauth-proxy-server')) {
+        const cleanPath = currentPath.replace('/gmail-oauth-proxy-server', '');
+        navigate(cleanPath || '/', { replace: true });
+        return;
+      }
     }
+    // 开发环境：不需要特殊处理
   }, [location.pathname, navigate]);
 
   const handleThemeToggle = () => {

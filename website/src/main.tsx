@@ -5,17 +5,23 @@ import './index.css'
 import './i18n'
 import App from './App.tsx'
 
-// 简化基础路径检测，避免复杂的动态逻辑
+// 动态检测部署环境并设置基础路径
 const getBasename = () => {
-  // 检查是否为生产环境（GitHub Pages）
-  const isProduction = window.location.hostname === 'cc11001100.github.io';
+  const hostname = window.location.hostname;
   
-  if (isProduction) {
-    // 生产环境下始终使用基础路径
+  // 检测部署环境
+  const isGitHubPages = hostname === 'cc11001100.github.io';
+  const isCustomDomain = hostname === 'www.cc11001100.com' || hostname === 'cc11001100.com';
+  
+  if (isGitHubPages) {
+    // GitHub Pages环境：需要基础路径
     return '/gmail-oauth-proxy-server';
+  } else if (isCustomDomain) {
+    // 自定义域名环境：不需要基础路径
+    return '';
   }
   
-  // 开发环境下使用空字符串
+  // 开发环境：不需要基础路径
   return '';
 };
 

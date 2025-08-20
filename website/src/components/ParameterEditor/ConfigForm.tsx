@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Grid,
   TextField,
@@ -9,11 +9,17 @@ import {
   Typography,
   Alert,
   Box,
+  InputAdornment,
+  IconButton,
+  Tooltip,
 } from '@mui/material';
+import type { SelectChangeEvent } from '@mui/material';
+import CasinoIcon from '@mui/icons-material/Casino';
 import { useTranslation } from 'react-i18next';
 import type { ServerConfig } from '../../types/config';
 import { ENVIRONMENT_OPTIONS, LOG_LEVEL_OPTIONS } from '../../types/config';
 import type { ValidationError } from '../../utils/configValidator';
+import { getOrGenerateApiKey, regenerateApiKey } from '../../utils/apiKeyGenerator';
 
 interface ConfigFormProps {
   config: ServerConfig;
@@ -23,9 +29,22 @@ interface ConfigFormProps {
 
 const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => {
   const { t } = useTranslation();
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  const handleChange = (field: keyof ServerConfig) => (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | any
+  // 初始化时从LocalStorage加载API密钥
+  useEffect(() => {
+    if (!isInitialized) {
+      const storedApiKey = getOrGenerateApiKey();
+      onChange({
+        ...config,
+        apiKey: storedApiKey,
+      });
+      setIsInitialized(true);
+    }
+  }, [isInitialized, config, onChange]);
+
+  const handleTextChange = (field: keyof ServerConfig) => (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const value = event.target.value;
     
@@ -53,6 +72,24 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
         [field]: value,
       });
     }
+  };
+
+  const handleSelectChange = (field: keyof ServerConfig) => (
+    event: SelectChangeEvent<string>
+  ) => {
+    const value = event.target.value;
+    onChange({
+      ...config,
+      [field]: value,
+    });
+  };
+
+  const handleRegenerateApiKey = () => {
+    const newApiKey = regenerateApiKey();
+    onChange({
+      ...config,
+      apiKey: newApiKey,
+    });
   };
 
   const getFieldError = (field: string): string | undefined => {
@@ -86,9 +123,25 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             label={t('parameterEditor.form.apiKey')}
             placeholder={t('parameterEditor.form.apiKeyPlaceholder')}
             value={config.apiKey || ''}
-            onChange={handleChange('apiKey')}
+            onChange={handleTextChange('apiKey')}
             variant="outlined"
-            helperText="Leave empty to auto-generate a secure API key"
+            helperText="API密钥会自动生成并存储在浏览器中，点击骰子按钮可重新生成"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Tooltip title="重新生成API密钥">
+                    <IconButton
+                      onClick={handleRegenerateApiKey}
+                      edge="end"
+                      color="primary"
+                      aria-label="重新生成API密钥"
+                    >
+                      <CasinoIcon />
+                    </IconButton>
+                  </Tooltip>
+                </InputAdornment>
+              ),
+            }}
           />
         </Grid>
 
@@ -100,7 +153,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             label={t('parameterEditor.form.ipWhitelist')}
             placeholder={t('parameterEditor.form.ipWhitelistPlaceholder')}
             value={config.ipWhitelist.join('\n')}
-            onChange={handleChange('ipWhitelist')}
+            onChange={handleTextChange('ipWhitelist')}
             variant="outlined"
             error={!!getFieldError('ipWhitelist')}
             helperText={getFieldError('ipWhitelist') || 'Examples: 192.168.1.0/24, 10.0.0.1, ::1'}
@@ -113,7 +166,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             type="number"
             label={t('parameterEditor.form.port')}
             value={config.port}
-            onChange={handleChange('port')}
+            onChange={handleTextChange('port')}
             variant="outlined"
             error={!!getFieldError('port')}
             helperText={getFieldError('port') || 'Default: 8080'}
@@ -127,7 +180,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             type="number"
             label={t('parameterEditor.form.timeout')}
             value={config.timeout}
-            onChange={handleChange('timeout')}
+            onChange={handleTextChange('timeout')}
             variant="outlined"
             error={!!getFieldError('timeout')}
             helperText={getFieldError('timeout') || 'Default: 10 seconds'}
@@ -140,7 +193,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             <InputLabel>{t('parameterEditor.form.environment')}</InputLabel>
             <Select
               value={config.environment}
-              onChange={handleChange('environment')}
+              onChange={handleSelectChange('environment')}
               label={t('parameterEditor.form.environment')}
             >
               {ENVIRONMENT_OPTIONS.map((option) => (
@@ -157,7 +210,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             <InputLabel>{t('parameterEditor.form.logLevel')}</InputLabel>
             <Select
               value={config.logLevel}
-              onChange={handleChange('logLevel')}
+              onChange={handleSelectChange('logLevel')}
               label={t('parameterEditor.form.logLevel')}
             >
               {LOG_LEVEL_OPTIONS.map((option) => (

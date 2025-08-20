@@ -1,7 +1,7 @@
 .footer {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   margin-top: auto;
-  border-top: 1px solid rgba(99, 102, 241, 0.1);
+  border-top: 1px solid rgba(220, 38, 38, 0.1);
   position: relative;
   overflow: hidden;
 }
@@ -13,17 +13,17 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.3), transparent);
 }
 
 /* 深色模式 */
 [data-mui-color-scheme="dark"] .footer {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  border-top: 1px solid rgba(99, 102, 241, 0.2);
+  border-top: 1px solid rgba(220, 38, 38, 0.2);
 }
 
 [data-mui-color-scheme="dark"] .footer::before {
-  background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.5), transparent);
 }
 
 /* 响应式设计 */

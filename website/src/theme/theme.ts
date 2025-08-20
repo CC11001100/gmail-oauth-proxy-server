@@ -4,9 +4,9 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#6366f1', // 更现代的靛蓝色
-      light: '#818cf8',
-      dark: '#4f46e5',
+      main: '#dc2626', // 偏红色
+      light: '#ef4444',
+      dark: '#b91c1c',
     },
     secondary: {
       main: '#f59e0b', // 温暖的橙色
@@ -27,9 +27,9 @@ export const lightTheme = createTheme({
       dark: '#059669',
     },
     info: {
-      main: '#3b82f6',
-      light: '#60a5fa',
-      dark: '#2563eb',
+      main: '#dc2626', // 改为偏红色
+      light: '#ef4444',
+      dark: '#b91c1c',
     },
     warning: {
       main: '#f59e0b',
@@ -172,9 +172,9 @@ export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#818cf8',
-      light: '#a5b4fc',
-      dark: '#6366f1',
+      main: '#ef4444', // 偏红色
+      light: '#f87171',
+      dark: '#dc2626',
     },
     secondary: {
       main: '#fbbf24',
@@ -195,9 +195,9 @@ export const darkTheme = createTheme({
       dark: '#10b981',
     },
     info: {
-      main: '#60a5fa',
-      light: '#93c5fd',
-      dark: '#3b82f6',
+      main: '#f87171', // 改为偏红色
+      light: '#fca5a5',
+      dark: '#ef4444',
     },
     warning: {
       main: '#fbbf24',

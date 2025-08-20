@@ -33,41 +33,25 @@ function App() {
 
   // 动态检测部署环境并处理路径重定向
   useEffect(() => {
-    const hostname = window.location.hostname;
+    // 检查当前路径
     const currentPath = location.pathname;
     
-    // 检测部署环境
-    const isGitHubPages = hostname === 'cc11001100.github.io';
-    const isCustomDomain = hostname === 'www.cc11001100.com' || hostname === 'cc11001100.com';
+    // 检查是否在自定义域名环境
+    const isCustomDomain = window.location.hostname === 'www.cc11001100.com';
     
-    if (isGitHubPages) {
-      // GitHub Pages环境：需要基础路径
+    if (isCustomDomain) {
+      // 自定义域名环境：不需要重定向，直接显示内容
+      // 用户访问任何路径都应该正常显示对应的页面内容
+    } else {
+      // GitHub Pages环境：需要处理 /gmail-oauth-proxy-server 前缀
       const basePath = '/gmail-oauth-proxy-server';
-      
-      if (currentPath === '/') {
-        navigate(`${basePath}/`, { replace: true });
-        return;
-      }
       
       if (!currentPath.startsWith(basePath)) {
-        const targetPath = `${basePath}${currentPath}`;
-        navigate(targetPath, { replace: true });
+        // 用户访问了不带前缀的路径，重定向到带前缀的路径
+        navigate(`${basePath}${currentPath}`, { replace: true });
         return;
       }
-    } else if (isCustomDomain) {
-      // 自定义域名环境：处理 /gmail-oauth-proxy-server 前缀的访问
-      const basePath = '/gmail-oauth-proxy-server';
-      
-      if (currentPath.startsWith(basePath)) {
-        // 用户访问了带前缀的路径，重定向到不带前缀的对应路径
-        const newPath = currentPath.replace(basePath, '') || '/';
-        navigate(newPath, { replace: true });
-        return;
-      }
-      
-      // 其他路径正常处理，不需要重定向
     }
-    // 开发环境：不需要特殊处理
   }, [location.pathname, navigate]);
 
   const handleThemeToggle = () => {

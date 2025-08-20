@@ -8,7 +8,20 @@ export default defineConfig(({ command, mode }) => {
   // 支持环境变量配置base路径
   // 可以通过环境变量 VITE_BASE_PATH 来设置
   // 如果没有设置，则根据部署环境自动判断
-  const basePath = process.env.VITE_BASE_PATH || (isDev ? '/' : '/gmail-oauth-proxy-server/')
+  let basePath = process.env.VITE_BASE_PATH
+  
+  if (!basePath) {
+    if (isDev) {
+      // 开发环境：使用根路径
+      basePath = '/'
+    } else {
+      // 生产环境：检查是否在自定义域名环境
+      // 注意：这里在构建时无法检测运行时环境，所以需要手动设置
+      // 自定义域名环境：VITE_BASE_PATH=/
+      // GitHub Pages环境：VITE_BASE_PATH=/gmail-oauth-proxy-server/
+      basePath = '/gmail-oauth-proxy-server/'
+    }
+  }
   
   console.log(`🚀 Vite 配置 - 环境: ${isDev ? '开发' : '生产'}, Base路径: ${basePath}`)
   

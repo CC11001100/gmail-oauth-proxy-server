@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"net/http"
 	"gmail-oauth-proxy-server/internal/logger"
-	
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 

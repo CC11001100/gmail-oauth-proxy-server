@@ -1,10 +1,10 @@
 package middleware
 
 import (
+	"gmail-oauth-proxy-server/internal/logger"
 	"net"
 	"net/http"
 	"strings"
-	"gmail-oauth-proxy-server/internal/logger"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,7 +19,7 @@ func IPWhitelistAuth(whitelist []string) gin.HandlerFunc {
 		}
 
 		clientIP := getClientIP(c)
-		
+
 		if !isIPAllowed(clientIP, whitelist) {
 			logger.Warn("IP access denied for %s", clientIP)
 			c.JSON(http.StatusForbidden, gin.H{

@@ -1,8 +1,8 @@
 package logger
 
 import (
-	"strings"
 	"github.com/sirupsen/logrus"
+	"strings"
 )
 
 var log *logrus.Logger
@@ -10,7 +10,7 @@ var log *logrus.Logger
 // Init 初始化日志器
 func Init(level string) {
 	log = logrus.New()
-	
+
 	// 设置日志级别
 	switch strings.ToLower(level) {
 	case "debug":
@@ -62,14 +62,14 @@ func SanitizeForLog(data map[string]interface{}) map[string]interface{} {
 	for key, value := range data {
 		keyLower := strings.ToLower(key)
 		isSensitive := false
-		
+
 		for _, field := range sensitiveFields {
 			if strings.Contains(keyLower, field) {
 				isSensitive = true
 				break
 			}
 		}
-		
+
 		if isSensitive {
 			if str, ok := value.(string); ok && len(str) > 8 {
 				sanitized[key] = str[:4] + "****" + str[len(str)-4:]
@@ -80,6 +80,6 @@ func SanitizeForLog(data map[string]interface{}) map[string]interface{} {
 			sanitized[key] = value
 		}
 	}
-	
+
 	return sanitized
 }

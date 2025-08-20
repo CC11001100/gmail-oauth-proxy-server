@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"net/http"
 	"gmail-oauth-proxy-server/internal/logger"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,11 +18,11 @@ type AuthConfig struct {
 func UnifiedAuth(config AuthConfig) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		clientIP := getClientIP(c)
-		
+
 		// 检查是否配置了任何鉴权方式
 		hasAPIKey := config.APIKey != ""
 		hasIPWhitelist := len(config.IPWhitelist) > 0
-		
+
 		if !hasAPIKey && !hasIPWhitelist {
 			logger.Warn("No authentication method configured")
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -36,7 +36,7 @@ func UnifiedAuth(config AuthConfig) gin.HandlerFunc {
 		// 验证结果
 		apiKeyValid := false
 		ipWhitelistValid := false
-		
+
 		// API Key验证
 		if hasAPIKey {
 			requestAPIKey := c.GetHeader("X-API-Key")
@@ -110,7 +110,7 @@ func UnifiedAuth(config AuthConfig) gin.HandlerFunc {
 			if errorCode == "AUTH_IP_NOT_ALLOWED" || errorCode == "AUTH_IP_FAILED" {
 				statusCode = http.StatusForbidden
 			}
-			
+
 			c.JSON(statusCode, gin.H{
 				"error": errorMsg,
 				"code":  errorCode,

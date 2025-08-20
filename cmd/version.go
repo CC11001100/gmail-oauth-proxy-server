@@ -40,7 +40,7 @@ var shortVersion bool
 
 func init() {
 	rootCmd.AddCommand(versionCmd)
-	
+
 	versionCmd.Flags().BoolVarP(&shortVersion, "short", "s", false, "显示简短版本信息")
 }
 
@@ -54,7 +54,7 @@ func showVersion(cmd *cobra.Command, args []string) {
 	color.Cyan("╔══════════════════════════════════════════════════════════════╗")
 	color.Cyan("║                    Gmail OAuth Proxy Server                 ║")
 	color.Cyan("╠══════════════════════════════════════════════════════════════╣")
-	
+
 	color.White("║ %-20s: %-35s ║", "版本", color.GreenString(Version))
 	color.White("║ %-20s: %-35s ║", "Git提交", color.YellowString(GitCommit))
 	color.White("║ %-20s: %-35s ║", "构建时间", color.BlueString(BuildTime))
@@ -62,13 +62,13 @@ func showVersion(cmd *cobra.Command, args []string) {
 	color.White("║ %-20s: %-35s ║", "操作系统", color.CyanString(runtime.GOOS))
 	color.White("║ %-20s: %-35s ║", "架构", color.CyanString(runtime.GOARCH))
 	color.White("║ %-20s: %-35s ║", "CPU核心数", color.RedString(fmt.Sprintf("%d", runtime.NumCPU())))
-	
+
 	color.Cyan("╠══════════════════════════════════════════════════════════════╣")
 	color.White("║ %-58s ║", color.GreenString("🚀 高性能Gmail OAuth代理服务"))
 	color.White("║ %-58s ║", color.BlueString("🔒 安全可靠的OAuth授权码交换"))
 	color.White("║ %-58s ║", color.YellowString("📊 智能日志脱敏与监控"))
 	color.Cyan("╚══════════════════════════════════════════════════════════════╝")
-	
+
 	// 显示运行时信息
 	color.Green("\n🔧 运行时信息:")
 	color.White("  • 当前时间: %s", time.Now().Format("2006-01-02 15:04:05"))
@@ -79,8 +79,8 @@ func showVersion(cmd *cobra.Command, args []string) {
 func getMemoryStats() string {
 	var m runtime.MemStats
 	runtime.ReadMemStats(&m)
-	
-	return fmt.Sprintf("已分配: %.2f MB, 系统: %.2f MB", 
+
+	return fmt.Sprintf("已分配: %.2f MB, 系统: %.2f MB",
 		float64(m.Alloc)/1024/1024,
 		float64(m.Sys)/1024/1024)
 }

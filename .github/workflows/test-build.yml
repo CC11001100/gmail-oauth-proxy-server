@@ -10,7 +10,7 @@ on:
 
 # Environment variables
 env:
-  GO_VERSION: '1.21'
+  GO_VERSION: '1.22'
 
 # Jobs
 jobs:
@@ -31,6 +31,15 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
+          
+      # Show Go version and environment
+      - name: Show Go version
+        run: |
+          go version
+          go env
+          echo "Current directory: $(pwd)"
+          echo "Directory contents:"
+          ls -la
           
       # Cache Go modules
       - name: Cache Go modules
@@ -54,6 +63,14 @@ jobs:
           distribution: goreleaser
           version: '~> v2'
           args: check
+          
+      # Show GoReleaser version and test manual build
+      - name: Test manual build
+        run: |
+          echo "Testing manual build..."
+          go build -v -o gmail-oauth-proxy .
+          ./gmail-oauth-proxy version
+          echo "Manual build successful!"
           
       # Test build with GoReleaser
       - name: Test build

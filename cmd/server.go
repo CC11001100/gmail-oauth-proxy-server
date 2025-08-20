@@ -142,7 +142,7 @@ func runServer(cmd *cobra.Command, args []string) {
 
 	// 显示鉴权配置
 	if cfg.APIKey != "" {
-		color.White("🔑 API Key: %s****%s", cfg.APIKey[:4], cfg.APIKey[len(cfg.APIKey)-4:])
+		color.White("🔑 API Key: %s", cfg.APIKey)
 	}
 	if len(cfg.IPWhitelist) > 0 {
 		color.White("🛡️  IP白名单: %d个规则", len(cfg.IPWhitelist))

@@ -88,10 +88,10 @@ func loadConfig(autoGenerate bool, validate bool) (*Config, error) {
 
 		// 如果是新生成的key，给用户提示
 		if isNew {
-			fmt.Printf("🔑 已生成新的API Key: %s****%s\n", apiKey[:8], apiKey[len(apiKey)-4:])
+			fmt.Printf("🔑 已生成新的API Key: %s\n", apiKey)
 			fmt.Printf("📁 API Key已保存到: %s\n", cache.GetCacheFile())
 		} else {
-			fmt.Printf("🔑 使用缓存的API Key: %s****%s\n", apiKey[:8], apiKey[len(apiKey)-4:])
+			fmt.Printf("🔑 使用缓存的API Key: %s\n", apiKey)
 		}
 	}
 

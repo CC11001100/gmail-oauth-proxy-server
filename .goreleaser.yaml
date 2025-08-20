@@ -150,7 +150,8 @@ release:
 
 # Universal binaries for macOS
 universal_binaries:
-  - replace: true
+  - id: gmail-oauth-proxy
+    replace: true
 
 # Metadata
 metadata:

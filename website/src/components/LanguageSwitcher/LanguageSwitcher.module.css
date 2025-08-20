@@ -1,0 +1,13 @@
+.languageSwitcher {
+  display: flex;
+  align-items: center;
+}
+
+.languageSwitcher button {
+  color: inherit;
+  text-transform: none;
+}
+
+.languageSwitcher button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

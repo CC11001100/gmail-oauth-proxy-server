@@ -1,0 +1,90 @@
+.documentation {
+  padding: 40px 0 80px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.endpointCard {
+  padding: 24px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+.endpointHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.endpointPath {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-weight: 600;
+}
+
+.endpointSection {
+  margin-top: 16px;
+}
+
+.codeText {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  background-color: #f5f5f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.codeBlock {
+  background-color: #f5f5f5;
+  padding: 16px;
+  border-radius: 8px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow-x: auto;
+  margin: 12px 0;
+  border: 1px solid #e0e0e0;
+}
+
+.alert {
+  margin-top: 24px;
+}
+
+.authMethod {
+  margin-bottom: 32px;
+}
+
+.authMethod ul {
+  margin: 8px 0;
+  padding-left: 24px;
+}
+
+.authMethod li {
+  margin-bottom: 8px;
+}
+
+.example {
+  margin-bottom: 32px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .codeText {
+    background-color: #2d2d2d;
+    color: #f5f5f5;
+  }
+  
+  .codeBlock {
+    background-color: #2d2d2d;
+    color: #f5f5f5;
+    border-color: #444;
+  }
+}

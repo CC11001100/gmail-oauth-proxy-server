@@ -1,0 +1,100 @@
+{
+  "nav": {
+    "home": "Home",
+    "documentation": "Documentation",
+    "parameterEditor": "Parameter Editor",
+    "download": "Download"
+  },
+  "home": {
+    "title": "Gmail OAuth Proxy Server",
+    "subtitle": "A secure Google OAuth proxy service implemented with Go and Gin framework",
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "features": {
+      "title": "Key Features",
+      "dualAuth": {
+        "title": "Dual Authentication",
+        "description": "Supports both API Key and IP whitelist authentication mechanisms"
+      },
+      "flexibleAuth": {
+        "title": "Flexible Authorization",
+        "description": "Can use API Key and IP whitelist individually or in combination"
+      },
+      "httpsEnforcement": {
+        "title": "HTTPS Enforcement",
+        "description": "Forces HTTPS protocol (except in development environment)"
+      },
+      "ipWhitelist": {
+        "title": "IP Whitelist",
+        "description": "Supports CIDR format and individual IP address access control"
+      },
+      "logSanitization": {
+        "title": "Log Sanitization",
+        "description": "Automatically sanitizes sensitive information like tokens, secrets, etc."
+      },
+      "requestProxy": {
+        "title": "Request Proxy",
+        "description": "Converts JSON requests to form-urlencoded format and forwards to Google OAuth API"
+      }
+    },
+    "quickStart": {
+      "title": "Quick Start",
+      "step1": "Download the latest release for your platform",
+      "step2": "Set your API key (optional, auto-generated if not set)",
+      "step3": "Start the server with default configuration",
+      "step4": "Your OAuth proxy is ready to use!"
+    }
+  },
+  "documentation": {
+    "title": "Documentation",
+    "apiSpec": "API Specification",
+    "configuration": "Configuration",
+    "authentication": "Authentication",
+    "examples": "Examples"
+  },
+  "parameterEditor": {
+    "title": "Parameter Editor",
+    "description": "Configure your Gmail OAuth Proxy Server parameters visually and generate commands",
+    "form": {
+      "apiKey": "API Key",
+      "apiKeyPlaceholder": "Enter your API key (optional, auto-generated if empty)",
+      "ipWhitelist": "IP Whitelist",
+      "ipWhitelistPlaceholder": "Enter IP addresses or CIDR ranges, one per line",
+      "port": "Port",
+      "environment": "Environment",
+      "logLevel": "Log Level",
+      "timeout": "Timeout (seconds)"
+    },
+    "output": {
+      "title": "Generated Configuration",
+      "commandLine": "Command Line",
+      "environmentVariables": "Environment Variables",
+      "configFile": "Configuration File (YAML)",
+      "copy": "Copy to Clipboard",
+      "copied": "Copied!"
+    }
+  },
+  "download": {
+    "title": "Download",
+    "description": "Download pre-built binaries for your platform",
+    "latest": "Latest Release",
+    "platforms": "Available Platforms",
+    "checksums": "Checksums",
+    "sourceCode": "Source Code"
+  },
+  "footer": {
+    "description": "A secure Google OAuth proxy service",
+    "links": {
+      "github": "GitHub",
+      "documentation": "Documentation",
+      "releases": "Releases",
+      "issues": "Issues"
+    },
+    "copyright": "© 2024 Gmail OAuth Proxy Server. Licensed under MIT License."
+  },
+  "common": {
+    "language": "Language",
+    "english": "English",
+    "chinese": "中文"
+  }
+}

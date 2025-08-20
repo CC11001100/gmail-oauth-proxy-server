@@ -1,0 +1,120 @@
+.home {
+  min-height: 100vh;
+}
+
+.heroSection {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 120px 0 80px;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  margin-bottom: 40px;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.heroButtons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primaryButton {
+  background-color: #ffffff !important;
+  color: #1976d2 !important;
+  padding: 12px 32px !important;
+  font-weight: 600 !important;
+}
+
+.primaryButton:hover {
+  background-color: #f5f5f5 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.secondaryButton {
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+  padding: 12px 32px !important;
+  font-weight: 600 !important;
+}
+
+.secondaryButton:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-2px);
+}
+
+.section {
+  padding: 80px 0;
+}
+
+.sectionTitle {
+  text-align: center;
+  margin-bottom: 64px;
+  font-weight: 600;
+  color: #212121;
+}
+
+.quickStartPaper {
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.quickStartActions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+  
+  .heroSubtitle {
+    font-size: 1.1rem;
+  }
+  
+  .heroButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .heroButtons button {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .quickStartPaper {
+    padding: 24px;
+  }
+  
+  .quickStartActions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .quickStartActions button {
+    width: 100%;
+    max-width: 300px;
+  }
+}

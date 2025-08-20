@@ -1,0 +1,18 @@
+.appBar {
+  background-color: #ffffff !important;
+  color: #212121 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.activeNavItem {
+  background-color: rgba(25, 118, 210, 0.1) !important;
+  border-radius: 4px !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  .appBar {
+    background-color: #1e1e1e !important;
+    color: #ffffff !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  }
+}

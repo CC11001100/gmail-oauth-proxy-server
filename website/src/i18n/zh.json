@@ -1,0 +1,100 @@
+{
+  "nav": {
+    "home": "首页",
+    "documentation": "文档",
+    "parameterEditor": "参数编辑器",
+    "download": "下载"
+  },
+  "home": {
+    "title": "Gmail OAuth 代理服务器",
+    "subtitle": "使用Go和Gin框架实现的安全谷歌OAuth代理服务",
+    "getStarted": "开始使用",
+    "learnMore": "了解更多",
+    "features": {
+      "title": "核心特性",
+      "dualAuth": {
+        "title": "双重认证",
+        "description": "支持API Key和IP白名单双重认证机制"
+      },
+      "flexibleAuth": {
+        "title": "灵活鉴权",
+        "description": "可单独或组合使用API Key和IP白名单"
+      },
+      "httpsEnforcement": {
+        "title": "HTTPS强制",
+        "description": "强制使用HTTPS协议（开发环境除外）"
+      },
+      "ipWhitelist": {
+        "title": "IP白名单",
+        "description": "支持CIDR格式和单个IP地址访问控制"
+      },
+      "logSanitization": {
+        "title": "日志脱敏",
+        "description": "自动脱敏敏感信息如token、secret等"
+      },
+      "requestProxy": {
+        "title": "请求代理",
+        "description": "将JSON请求转换为form-urlencoded格式并转发到Google OAuth API"
+      }
+    },
+    "quickStart": {
+      "title": "快速开始",
+      "step1": "下载适合您平台的最新版本",
+      "step2": "设置您的API密钥（可选，未设置时自动生成）",
+      "step3": "使用默认配置启动服务器",
+      "step4": "您的OAuth代理已准备就绪！"
+    }
+  },
+  "documentation": {
+    "title": "文档",
+    "apiSpec": "API规范",
+    "configuration": "配置",
+    "authentication": "认证",
+    "examples": "示例"
+  },
+  "parameterEditor": {
+    "title": "参数编辑器",
+    "description": "可视化配置Gmail OAuth代理服务器参数并生成命令",
+    "form": {
+      "apiKey": "API密钥",
+      "apiKeyPlaceholder": "输入您的API密钥（可选，留空时自动生成）",
+      "ipWhitelist": "IP白名单",
+      "ipWhitelistPlaceholder": "输入IP地址或CIDR范围，每行一个",
+      "port": "端口",
+      "environment": "环境",
+      "logLevel": "日志级别",
+      "timeout": "超时时间（秒）"
+    },
+    "output": {
+      "title": "生成的配置",
+      "commandLine": "命令行",
+      "environmentVariables": "环境变量",
+      "configFile": "配置文件（YAML）",
+      "copy": "复制到剪贴板",
+      "copied": "已复制！"
+    }
+  },
+  "download": {
+    "title": "下载",
+    "description": "下载适合您平台的预构建二进制文件",
+    "latest": "最新版本",
+    "platforms": "可用平台",
+    "checksums": "校验和",
+    "sourceCode": "源代码"
+  },
+  "footer": {
+    "description": "安全的谷歌OAuth代理服务",
+    "links": {
+      "github": "GitHub",
+      "documentation": "文档",
+      "releases": "发布版本",
+      "issues": "问题反馈"
+    },
+    "copyright": "© 2024 Gmail OAuth代理服务器。采用MIT许可证。"
+  },
+  "common": {
+    "language": "语言",
+    "english": "English",
+    "chinese": "中文"
+  }
+}

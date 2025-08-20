@@ -24,8 +24,12 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 	// API路由组（需要认证）
 	api := r.Group("/")
 	{
-		// 添加API Key认证中间件
-		api.Use(middleware.APIKeyAuth(cfg.APIKey))
+		// 添加统一鉴权中间件
+		authConfig := middleware.AuthConfig{
+			APIKey:      cfg.APIKey,
+			IPWhitelist: cfg.IPWhitelist,
+		}
+		api.Use(middleware.UnifiedAuth(authConfig))
 		// 添加请求日志中间件
 		api.Use(middleware.RequestLogger())
 

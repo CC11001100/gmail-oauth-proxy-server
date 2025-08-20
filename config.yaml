@@ -6,6 +6,13 @@ port: "8080"
 # API Key (建议通过环境变量设置)
 # api_key: "your-secret-api-key"
 
+# IP白名单配置 (支持CIDR格式和单个IP)
+# ip_whitelist:
+#   - "192.168.1.0/24"     # 局域网段
+#   - "10.0.0.0/8"         # 内网段
+#   - "127.0.0.1"          # 本地回环
+#   - "::1"                # IPv6本地回环
+
 # 运行环境 (development/production)
 environment: "development"
 
@@ -14,3 +21,9 @@ log_level: "info"
 
 # 请求超时时间（秒）
 timeout: 10
+
+# 鉴权说明:
+# 1. 可以只配置API Key
+# 2. 可以只配置IP白名单
+# 3. 可以同时配置两者（都必须通过验证）
+# 4. 至少需要配置一种鉴权方式

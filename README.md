@@ -4,8 +4,10 @@
 
 ## 功能特性
 
-- **🔐 安全认证**: 使用API Key进行请求认证
+- **🔐 双重认证**: 支持API Key和IP白名单双重认证机制
+- **🛡️ 灵活鉴权**: 可单独或组合使用API Key和IP白名单
 - **🔒 HTTPS强制**: 强制使用HTTPS协议（开发环境除外）
+- **🌐 IP白名单**: 支持CIDR格式和单个IP地址访问控制
 - **🛡️ 日志脱敏**: 自动脱敏敏感信息如token、secret等
 - **⚡ 请求代理**: 将JSON请求转换为form-urlencoded格式并转发到Google OAuth API
 - **🚨 错误处理**: 完善的错误处理和日志记录
@@ -42,7 +44,8 @@ OAuth token交换端点
 
 ### 环境变量
 
-- `OAUTH_PROXY_API_KEY`: API密钥（必需）
+- `OAUTH_PROXY_API_KEY`: API密钥（可选，与IP白名单至少配置一个）
+- `OAUTH_PROXY_IP_WHITELIST`: IP白名单，逗号分隔（可选）
 - `OAUTH_PROXY_PORT`: 服务端口（默认: 8080）
 - `OAUTH_PROXY_ENVIRONMENT`: 运行环境（默认: development）
 - `OAUTH_PROXY_LOG_LEVEL`: 日志级别（默认: info）
@@ -77,15 +80,31 @@ go build -o gmail-oauth-proxy main.go
 ```
 
 #### 启动服务器
+
+**使用API Key认证:**
 ```bash
 # 设置API Key
 export OAUTH_PROXY_API_KEY="your-secret-api-key"
 
 # 使用默认配置启动
 ./gmail-oauth-proxy server
+```
 
-# 指定端口启动
-./gmail-oauth-proxy server --port 9000
+**使用IP白名单认证:**
+```bash
+# 通过命令行参数设置IP白名单
+./gmail-oauth-proxy server --ip-whitelist 192.168.1.0/24 --ip-whitelist 10.0.0.1
+
+# 通过环境变量设置IP白名单
+export OAUTH_PROXY_IP_WHITELIST="192.168.1.0/24,10.0.0.1,127.0.0.1"
+./gmail-oauth-proxy server
+```
+
+**使用双重认证（API Key + IP白名单）:**
+```bash
+# 同时设置API Key和IP白名单
+export OAUTH_PROXY_API_KEY="your-secret-api-key"
+./gmail-oauth-proxy server --ip-whitelist 192.168.1.0/24
 
 # 生产环境模式
 ./gmail-oauth-proxy server --env production --log-level warn
@@ -126,6 +145,7 @@ go run main.go server --verbose
 ### server 子命令选项
 - `--port, -p` - 服务器监听端口 (默认: 8080)
 - `--api-key` - API认证密钥
+- `--ip-whitelist` - IP白名单，支持CIDR格式 (可多次指定)
 - `--log-level` - 日志级别 (debug|info|warn|error)
 - `--env` - 运行环境 (development|production)
 
@@ -138,11 +158,71 @@ go run main.go server --verbose
 # 使用自定义配置文件
 ./gmail-oauth-proxy --config /path/to/config.yaml server
 
+# 配置多个IP白名单
+./gmail-oauth-proxy server --ip-whitelist 192.168.1.0/24 --ip-whitelist 10.0.0.1
+
 # 禁用彩色输出
 ./gmail-oauth-proxy --no-color version
 
 # 验证配置
 ./gmail-oauth-proxy config validate
+```
+
+## 鉴权机制
+
+Gmail OAuth代理服务器支持两种鉴权方式，可以单独使用或组合使用：
+
+### 1. API Key认证
+通过HTTP头 `X-API-Key` 进行认证：
+```bash
+curl -H "X-API-Key: your-secret-api-key" http://localhost:8080/token
+```
+
+### 2. IP白名单认证
+基于客户端IP地址进行访问控制，支持：
+- **单个IP地址**: `192.168.1.100`
+- **CIDR网段**: `192.168.1.0/24`
+- **IPv6地址**: `::1`, `2001:db8::/32`
+
+### 3. 鉴权策略
+
+| 配置情况 | 验证逻辑 | 说明 |
+|---------|---------|------|
+| 只配置API Key | 验证API Key | 传统的API Key认证 |
+| 只配置IP白名单 | 验证IP地址 | 基于IP的访问控制 |
+| 同时配置两者 | API Key **AND** IP白名单 | 双重验证，两者都必须通过 |
+
+### 4. 配置示例
+
+**配置文件方式 (config.yaml):**
+```yaml
+# 只使用API Key
+api_key: "your-secret-api-key"
+
+# 只使用IP白名单
+ip_whitelist:
+  - "192.168.1.0/24"
+  - "10.0.0.1"
+  - "127.0.0.1"
+
+# 双重认证
+api_key: "your-secret-api-key"
+ip_whitelist:
+  - "192.168.1.0/24"
+  - "10.0.0.1"
+```
+
+**环境变量方式:**
+```bash
+# 只使用API Key
+export OAUTH_PROXY_API_KEY="your-secret-api-key"
+
+# 只使用IP白名单
+export OAUTH_PROXY_IP_WHITELIST="192.168.1.0/24,10.0.0.1,127.0.0.1"
+
+# 双重认证
+export OAUTH_PROXY_API_KEY="your-secret-api-key"
+export OAUTH_PROXY_IP_WHITELIST="192.168.1.0/24,10.0.0.1"
 ```
 
 ## 健康检查

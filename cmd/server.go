@@ -15,10 +15,11 @@ import (
 )
 
 var (
-	port     string
-	apiKey   string
-	logLevel string
-	env      string
+	port        string
+	apiKey      string
+	logLevel    string
+	env         string
+	ipWhitelist []string
 )
 
 // serverCmd represents the server command
@@ -33,14 +34,16 @@ var serverCmd = &cobra.Command{
 • POST /token - OAuth授权码交换端点
 • GET /health - 健康检查端点
 • API Key认证保护
+• IP白名单访问控制
 • HTTPS强制（生产环境）
 • 智能日志脱敏
 • 完善的错误处理
 
 示例:
-  gmail-oauth-proxy server                    # 使用默认配置启动
-  gmail-oauth-proxy server --port 9000        # 指定端口启动
-  gmail-oauth-proxy server --env production   # 生产环境模式`,
+  gmail-oauth-proxy server                                    # 使用默认配置启动
+  gmail-oauth-proxy server --port 9000                        # 指定端口启动
+  gmail-oauth-proxy server --env production                   # 生产环境模式
+  gmail-oauth-proxy server --ip-whitelist 192.168.1.0/24     # 配置IP白名单`,
 	Run: runServer,
 }
 
@@ -52,12 +55,14 @@ func init() {
 	serverCmd.Flags().StringVar(&apiKey, "api-key", "", "API认证密钥")
 	serverCmd.Flags().StringVar(&logLevel, "log-level", "info", "日志级别 (debug|info|warn|error)")
 	serverCmd.Flags().StringVar(&env, "env", "development", "运行环境 (development|production)")
+	serverCmd.Flags().StringSliceVar(&ipWhitelist, "ip-whitelist", []string{}, "IP白名单，支持CIDR格式 (可多次指定)")
 
 	// 绑定到viper
 	viper.BindPFlag("port", serverCmd.Flags().Lookup("port"))
 	viper.BindPFlag("api_key", serverCmd.Flags().Lookup("api-key"))
 	viper.BindPFlag("log_level", serverCmd.Flags().Lookup("log-level"))
 	viper.BindPFlag("environment", serverCmd.Flags().Lookup("env"))
+	viper.BindPFlag("ip_whitelist", serverCmd.Flags().Lookup("ip-whitelist"))
 }
 
 func runServer(cmd *cobra.Command, args []string) {
@@ -84,11 +89,16 @@ func runServer(cmd *cobra.Command, args []string) {
 	if cmd.Flags().Changed("env") {
 		cfg.Environment = env
 	}
+	if cmd.Flags().Changed("ip-whitelist") {
+		cfg.IPWhitelist = ipWhitelist
+	}
 
-	// 验证必需的配置
-	if cfg.APIKey == "" {
-		color.Red("❌ API Key未设置，请通过 --api-key 参数或 OAUTH_PROXY_API_KEY 环境变量设置")
-		log.Fatal("API key is required")
+	// 验证鉴权配置
+	if cfg.APIKey == "" && len(cfg.IPWhitelist) == 0 {
+		color.Red("❌ 未配置任何鉴权方式，请配置API Key或IP白名单")
+		color.Yellow("   • API Key: 通过 --api-key 参数或 OAUTH_PROXY_API_KEY 环境变量设置")
+		color.Yellow("   • IP白名单: 通过 --ip-whitelist 参数或 OAUTH_PROXY_IP_WHITELIST 环境变量设置")
+		log.Fatal("At least one authentication method is required")
 	}
 
 	// 初始化日志
@@ -122,7 +132,23 @@ func runServer(cmd *cobra.Command, args []string) {
 	color.Green("🚀 Gmail OAuth代理服务器启动成功!")
 	color.Cyan(separator)
 	color.White("📍 监听地址: http://localhost:%s", cfg.Port)
-	color.White("🔑 API Key: %s****%s", cfg.APIKey[:4], cfg.APIKey[len(cfg.APIKey)-4:])
+
+	// 显示鉴权配置
+	if cfg.APIKey != "" {
+		color.White("🔑 API Key: %s****%s", cfg.APIKey[:4], cfg.APIKey[len(cfg.APIKey)-4:])
+	}
+	if len(cfg.IPWhitelist) > 0 {
+		color.White("🛡️  IP白名单: %d个规则", len(cfg.IPWhitelist))
+		for i, ip := range cfg.IPWhitelist {
+			if i < 3 { // 只显示前3个
+				color.White("   • %s", ip)
+			} else if i == 3 {
+				color.White("   • ... 还有%d个", len(cfg.IPWhitelist)-3)
+				break
+			}
+		}
+	}
+
 	color.White("🌍 运行环境: %s", cfg.Environment)
 	color.White("📊 日志级别: %s", cfg.LogLevel)
 	color.Cyan(separator)

@@ -3,6 +3,8 @@ package cmd
 import (
 	"fmt"
 	"gmail-oauth-proxy-server/internal/config"
+	"net"
+	"strings"
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
@@ -92,16 +94,32 @@ func showConfig(cmd *cobra.Command, args []string) {
 	color.White("  • 运行环境: %s", color.MagentaString(cfg.Environment))
 	color.White("  • 请求超时: %s", color.YellowString(fmt.Sprintf("%d秒", cfg.Timeout)))
 
+	color.Green("\n🔐 鉴权配置:")
 	// 脱敏显示API Key
-	apiKeyDisplay := "未设置"
 	if cfg.APIKey != "" {
+		apiKeyDisplay := "****"
 		if len(cfg.APIKey) > 8 {
 			apiKeyDisplay = fmt.Sprintf("%s****%s", cfg.APIKey[:4], cfg.APIKey[len(cfg.APIKey)-4:])
-		} else {
-			apiKeyDisplay = "****"
 		}
+		color.White("  • API密钥: %s", color.GreenString(apiKeyDisplay))
+	} else {
+		color.White("  • API密钥: %s", color.RedString("未设置"))
 	}
-	color.White("  • API密钥: %s", color.RedString(apiKeyDisplay))
+
+	// 显示IP白名单
+	if len(cfg.IPWhitelist) > 0 {
+		color.White("  • IP白名单: %s", color.GreenString(fmt.Sprintf("%d个规则", len(cfg.IPWhitelist))))
+		for i, ip := range cfg.IPWhitelist {
+			if i < 5 { // 只显示前5个
+				color.White("    - %s", color.BlueString(ip))
+			} else if i == 5 {
+				color.White("    - %s", color.YellowString(fmt.Sprintf("... 还有%d个", len(cfg.IPWhitelist)-5)))
+				break
+			}
+		}
+	} else {
+		color.White("  • IP白名单: %s", color.RedString("未设置"))
+	}
 
 	color.Green("\n📊 日志配置:")
 	color.White("  • 日志级别: %s", color.GreenString(cfg.LogLevel))
@@ -114,6 +132,7 @@ func showConfig(cmd *cobra.Command, args []string) {
 		"OAUTH_PROXY_ENVIRONMENT",
 		"OAUTH_PROXY_LOG_LEVEL",
 		"OAUTH_PROXY_TIMEOUT",
+		"OAUTH_PROXY_IP_WHITELIST",
 	}
 
 	for _, envVar := range envVars {
@@ -146,8 +165,11 @@ func validateConfig(cmd *cobra.Command, args []string) {
 	// 验证必需的配置项
 	errors := []string{}
 
-	if cfg.APIKey == "" {
-		errors = append(errors, "API Key未设置 (需要通过 --api-key 参数或 OAUTH_PROXY_API_KEY 环境变量设置)")
+	// 验证鉴权配置
+	if cfg.APIKey == "" && len(cfg.IPWhitelist) == 0 {
+		errors = append(errors, "未配置任何鉴权方式 (需要配置API Key或IP白名单)")
+		errors = append(errors, "  • API Key: 通过 --api-key 参数或 OAUTH_PROXY_API_KEY 环境变量设置")
+		errors = append(errors, "  • IP白名单: 通过 --ip-whitelist 参数或 OAUTH_PROXY_IP_WHITELIST 环境变量设置")
 	}
 
 	if cfg.Port == "" {
@@ -181,6 +203,25 @@ func validateConfig(cmd *cobra.Command, args []string) {
 		errors = append(errors, fmt.Sprintf("无效的超时时间: %d (必须大于0)", cfg.Timeout))
 	}
 
+	// 验证IP白名单格式
+	for _, ip := range cfg.IPWhitelist {
+		if strings.TrimSpace(ip) == "" {
+			continue
+		}
+		// 检查CIDR格式
+		if strings.Contains(ip, "/") {
+			_, _, err := net.ParseCIDR(ip)
+			if err != nil {
+				errors = append(errors, fmt.Sprintf("无效的CIDR格式: %s", ip))
+			}
+		} else {
+			// 检查IP地址格式
+			if net.ParseIP(ip) == nil {
+				errors = append(errors, fmt.Sprintf("无效的IP地址: %s", ip))
+			}
+		}
+	}
+
 	// 显示验证结果
 	if len(errors) > 0 {
 		color.Red("❌ 配置验证失败，发现 %d 个错误:", len(errors))
@@ -199,5 +240,13 @@ func validateConfig(cmd *cobra.Command, args []string) {
 		color.White("   • 环境: %s", cfg.Environment)
 		color.White("   • 日志级别: %s", cfg.LogLevel)
 		color.White("   • 超时时间: %d秒", cfg.Timeout)
+
+		// 显示鉴权配置摘要
+		if cfg.APIKey != "" {
+			color.White("   • API Key: 已配置")
+		}
+		if len(cfg.IPWhitelist) > 0 {
+			color.White("   • IP白名单: %d个规则", len(cfg.IPWhitelist))
+		}
 	}
 }

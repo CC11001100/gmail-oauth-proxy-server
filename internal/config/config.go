@@ -9,11 +9,12 @@ import (
 
 // Config 应用配置结构
 type Config struct {
-	Port        string `mapstructure:"port"`
-	APIKey      string `mapstructure:"api_key"`
-	Environment string `mapstructure:"environment"`
-	LogLevel    string `mapstructure:"log_level"`
-	Timeout     int    `mapstructure:"timeout"`
+	Port        string   `mapstructure:"port"`
+	APIKey      string   `mapstructure:"api_key"`
+	Environment string   `mapstructure:"environment"`
+	LogLevel    string   `mapstructure:"log_level"`
+	Timeout     int      `mapstructure:"timeout"`
+	IPWhitelist []string `mapstructure:"ip_whitelist"`
 }
 
 // Load 加载配置
@@ -39,6 +40,11 @@ func Load() (*Config, error) {
 		viper.Set("api_key", apiKey)
 	}
 
+	// 从环境变量读取IP白名单
+	if ipWhitelist := os.Getenv("OAUTH_PROXY_IP_WHITELIST"); ipWhitelist != "" {
+		viper.Set("ip_whitelist", ipWhitelist)
+	}
+
 	// 读取配置文件（可选）
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
@@ -51,9 +57,9 @@ func Load() (*Config, error) {
 		return nil, err
 	}
 
-	// 验证必需的配置
-	if config.APIKey == "" {
-		return nil, fmt.Errorf("API key is required")
+	// 验证鉴权配置（至少需要配置一种鉴权方式）
+	if config.APIKey == "" && len(config.IPWhitelist) == 0 {
+		return nil, fmt.Errorf("at least one authentication method is required: API key or IP whitelist")
 	}
 
 	return &config, nil

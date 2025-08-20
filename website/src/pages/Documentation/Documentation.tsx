@@ -29,30 +29,32 @@ import {
   Info as InfoIcon,
   CheckCircle as CheckCircleIcon,
 } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 import styles from './Documentation.module.css';
 
 const Documentation: React.FC = () => {
+  const { t } = useTranslation();
 
   const features = [
     {
       icon: <SecurityIcon color="primary" />,
-      title: "Dual Authentication",
-      description: "API Key and IP whitelist authentication for enhanced security"
+      title: t('documentation.features.dualAuth.title'),
+      description: t('documentation.features.dualAuth.description')
     },
     {
       icon: <CheckCircleIcon color="success" />,
-      title: "HTTPS Enforcement",
-      description: "Secure communication enforced in production environments"
+      title: t('documentation.features.httpsEnforcement.title'),
+      description: t('documentation.features.httpsEnforcement.description')
     },
     {
       icon: <CodeIcon color="info" />,
-      title: "IP Whitelist",
-      description: "CIDR format and individual IP control for access management"
+      title: t('documentation.features.ipWhitelist.title'),
+      description: t('documentation.features.ipWhitelist.description')
     },
     {
       icon: <InfoIcon color="warning" />,
-      title: "Log Sanitization",
-      description: "Automatic sensitive data protection in logs"
+      title: t('documentation.features.logSanitization.title'),
+      description: t('documentation.features.logSanitization.description')
     }
   ];
 
@@ -60,7 +62,7 @@ const Documentation: React.FC = () => {
     {
       method: 'POST',
       path: '/token',
-      description: 'OAuth token exchange endpoint for Gmail API integration',
+      description: t('documentation.apiEndpoints.token.description'),
       headers: ['Content-Type: application/json', 'X-API-Key: <your_api_key>'],
       requestBody: {
         code: 'string (required)',
@@ -74,7 +76,7 @@ const Documentation: React.FC = () => {
     {
       method: 'GET',
       path: '/health',
-      description: 'Health check endpoint for monitoring and load balancers',
+      description: t('documentation.apiEndpoints.health.description'),
       headers: [],
       requestBody: null,
       status: ['200 - OK'],
@@ -131,21 +133,20 @@ const Documentation: React.FC = () => {
       {/* Header Section */}
       <Box className={styles.header}>
         <Typography variant="h2" component="h1" gutterBottom>
-          Gmail OAuth Proxy Server
+          {t('documentation.header.title')}
         </Typography>
         <Typography variant="h6" color="text.secondary" paragraph>
-          Secure OAuth token exchange proxy service for Gmail API integration
+          {t('documentation.header.subtitle')}
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          A secure intermediary layer between your application and Google's OAuth endpoints, 
-          providing enhanced security through dual authentication and IP whitelisting.
+          {t('documentation.header.description')}
         </Typography>
       </Box>
 
       {/* Features Section */}
       <Box className={styles.content} sx={{ mb: 4 }}>
         <Typography variant="h4" gutterBottom sx={{ mb: 3 }}>
-          Key Features
+          {t('documentation.features.title')}
         </Typography>
         <Grid container spacing={3}>
           {features.map((feature, index) => (
@@ -174,20 +175,15 @@ const Documentation: React.FC = () => {
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h5">
               <InfoIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-              Overview
+              {t('documentation.overview.title')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Typography variant="body1" paragraph>
-              Gmail OAuth Proxy Server is a secure proxy service that facilitates OAuth token exchange
-              for Gmail API integration. It provides a secure intermediary layer between your application
-              and Google's OAuth endpoints, ensuring that sensitive OAuth credentials are never exposed
-              to your end users.
+              {t('documentation.overview.description1')}
             </Typography>
             <Typography variant="body1" paragraph>
-              The server acts as a secure bridge, handling the OAuth flow on behalf of your application
-              while maintaining strict security controls through API key authentication and IP address
-              whitelisting.
+              {t('documentation.overview.description2')}
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -197,7 +193,7 @@ const Documentation: React.FC = () => {
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h5">
               <ApiIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-              API Endpoints
+              {t('documentation.apiEndpoints.title')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -220,7 +216,7 @@ const Documentation: React.FC = () => {
                 {endpoint.headers.length > 0 && (
                   <Box className={styles.endpointSection}>
                     <Typography variant="subtitle2" gutterBottom>
-                      Required Headers:
+                      {t('documentation.apiEndpoints.token.headers')}
                     </Typography>
                     {endpoint.headers.map((header, idx) => (
                       <Typography key={idx} variant="body2" className={styles.codeText}>
@@ -233,15 +229,15 @@ const Documentation: React.FC = () => {
                 {endpoint.requestBody && (
                   <Box className={styles.endpointSection}>
                     <Typography variant="subtitle2" gutterBottom>
-                      Request Body Parameters:
+                      {t('documentation.apiEndpoints.token.requestBody')}
                     </Typography>
                     <TableContainer component={Paper} variant="outlined" sx={{ maxWidth: 600 }}>
                       <Table size="small">
                         <TableHead>
                           <TableRow>
-                            <TableCell><strong>Parameter</strong></TableCell>
-                            <TableCell><strong>Type</strong></TableCell>
-                            <TableCell><strong>Required</strong></TableCell>
+                            <TableCell><strong>{t('documentation.configuration.variable')}</strong></TableCell>
+                            <TableCell><strong>{t('documentation.configuration.type')}</strong></TableCell>
+                            <TableCell><strong>{t('documentation.configuration.required')}</strong></TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
@@ -251,7 +247,7 @@ const Documentation: React.FC = () => {
                               <TableCell>{value}</TableCell>
                               <TableCell>
                                 <Chip
-                                  label={value.includes('required') ? 'Yes' : 'No'}
+                                  label={value.includes('required') ? t('documentation.common.yes') : t('documentation.common.no')}
                                   color={value.includes('required') ? 'error' : 'default'}
                                   size="small"
                                 />
@@ -266,7 +262,7 @@ const Documentation: React.FC = () => {
                 
                 <Box className={styles.endpointSection}>
                   <Typography variant="subtitle2" gutterBottom>
-                    Response Status Codes:
+                    {t('documentation.apiEndpoints.token.responseStatus')}
                   </Typography>
                   {endpoint.status.map((status, idx) => (
                     <Typography key={idx} variant="body2" className={styles.codeText}>
@@ -302,29 +298,29 @@ const Documentation: React.FC = () => {
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h5">
               <SecurityIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-              Authentication
+              {t('documentation.authentication.title')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Typography variant="h6" gutterBottom>
-              Authentication Methods
+              {t('documentation.authentication.methods')}
             </Typography>
             <Typography variant="body1" paragraph>
-              The server supports two authentication methods that can be used individually or in combination:
+              {t('documentation.authentication.description')}
             </Typography>
             
             <Box className={styles.authMethod}>
               <Typography variant="h6" gutterBottom>
-                1. API Key Authentication
+                {t('documentation.authentication.apiKey.title')}
               </Typography>
               <Typography variant="body2" paragraph>
-                Authenticate via HTTP header <code>X-API-Key</code>:
+                {t('documentation.authentication.apiKey.description')}
               </Typography>
               <pre className={styles.codeBlock}>
 {`curl -H "X-API-Key: your-secret-api-key" http://localhost:8080/token`}
               </pre>
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                The API key can be set via environment variable or auto-generated for development.
+                {t('documentation.authentication.apiKey.note')}
               </Typography>
             </Box>
 
@@ -332,25 +328,24 @@ const Documentation: React.FC = () => {
 
             <Box className={styles.authMethod}>
               <Typography variant="h6" gutterBottom>
-                2. IP Whitelist Authentication
+                {t('documentation.authentication.ipWhitelist.title')}
               </Typography>
               <Typography variant="body2" paragraph>
-                Access control based on client IP address, supports:
+                {t('documentation.authentication.ipWhitelist.description')}
               </Typography>
               <ul>
-                <li><strong>Individual IP addresses:</strong> <code>192.168.1.100</code></li>
-                <li><strong>CIDR networks:</strong> <code>192.168.1.0/24</code></li>
-                <li><strong>IPv6 addresses:</strong> <code>::1</code>, <code>2001:db8::/32</code></li>
+                <li><strong>{t('documentation.authentication.ipWhitelist.individualIP')}</strong> <code>192.168.1.100</code></li>
+                <li><strong>{t('documentation.authentication.ipWhitelist.cidrNetworks')}</strong> <code>192.168.1.0/24</code></li>
+                <li><strong>{t('documentation.authentication.ipWhitelist.ipv6Addresses')}</strong> <code>::1</code>, <code>2001:db8::/32</code></li>
               </ul>
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                Multiple IPs can be specified as comma-separated values.
+                {t('documentation.authentication.ipWhitelist.note')}
               </Typography>
             </Box>
 
             <Alert severity="warning" sx={{ mt: 2 }}>
               <Typography variant="body2">
-                <strong>Security Note:</strong> For production use, it's recommended to use both 
-                authentication methods together for maximum security.
+                <strong>{t('documentation.authentication.securityNote')}</strong>
               </Typography>
             </Alert>
           </AccordionDetails>
@@ -361,22 +356,22 @@ const Documentation: React.FC = () => {
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h5">
               <SettingsIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-              Configuration
+              {t('documentation.configuration.title')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Typography variant="h6" gutterBottom>
-              Environment Variables
+              {t('documentation.configuration.envVars')}
             </Typography>
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell><strong>Variable</strong></TableCell>
-                    <TableCell><strong>Type</strong></TableCell>
-                    <TableCell><strong>Required</strong></TableCell>
-                    <TableCell><strong>Default</strong></TableCell>
-                    <TableCell><strong>Description</strong></TableCell>
+                    <TableCell><strong>{t('documentation.configuration.variable')}</strong></TableCell>
+                    <TableCell><strong>{t('documentation.configuration.type')}</strong></TableCell>
+                    <TableCell><strong>{t('documentation.configuration.required')}</strong></TableCell>
+                    <TableCell><strong>{t('documentation.configuration.default')}</strong></TableCell>
+                    <TableCell><strong>{t('documentation.configuration.description')}</strong></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -386,7 +381,7 @@ const Documentation: React.FC = () => {
                       <TableCell>{option.type}</TableCell>
                       <TableCell>
                         <Chip
-                          label={option.required ? 'Yes' : 'No'}
+                          label={option.required ? t('documentation.common.yes') : t('documentation.common.no')}
                           color={option.required ? 'error' : 'default'}
                           size="small"
                         />
@@ -406,17 +401,17 @@ const Documentation: React.FC = () => {
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography variant="h5">
               <CodeIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-              Usage Examples
+              {t('documentation.examples.title')}
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Typography variant="h6" gutterBottom>
-              Quick Start Examples
+              {t('documentation.examples.quickStart')}
             </Typography>
             
             <Box className={styles.example}>
               <Typography variant="subtitle1" gutterBottom>
-                Start with API Key only:
+                {t('documentation.examples.apiKeyOnly')}
               </Typography>
               <pre className={styles.codeBlock}>
 {`export OAUTH_PROXY_API_KEY="your-secret-api-key"
@@ -426,7 +421,7 @@ const Documentation: React.FC = () => {
 
             <Box className={styles.example}>
               <Typography variant="subtitle1" gutterBottom>
-                Start with IP whitelist only:
+                {t('documentation.examples.ipWhitelistOnly')}
               </Typography>
               <pre className={styles.codeBlock}>
 {`export OAUTH_PROXY_IP_WHITELIST="192.168.1.0/24,10.0.0.1,127.0.0.1"
@@ -436,7 +431,7 @@ const Documentation: React.FC = () => {
 
             <Box className={styles.example}>
               <Typography variant="subtitle1" gutterBottom>
-                Start with dual authentication:
+                {t('documentation.examples.dualAuth')}
               </Typography>
               <pre className={styles.codeBlock}>
 {`export OAUTH_PROXY_API_KEY="your-secret-api-key"
@@ -447,7 +442,7 @@ export OAUTH_PROXY_IP_WHITELIST="192.168.1.0/24,10.0.0.1"
 
             <Box className={styles.example}>
               <Typography variant="subtitle1" gutterBottom>
-                Using configuration file:
+                {t('documentation.examples.configFile')}
               </Typography>
               <pre className={styles.codeBlock}>
 {`# config.yaml

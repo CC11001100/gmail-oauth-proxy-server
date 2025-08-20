@@ -86,7 +86,7 @@ const CommandOutput: React.FC<CommandOutputProps> = ({ output }) => {
       
       <Paper variant="outlined">
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={activeTab} onChange={handleTabChange} aria-label="output tabs">
+          <Tabs value={activeTab} onChange={handleTabChange} aria-label={t('parameterEditor.output.tabsLabel')}>
             {outputs.map((output, index) => (
               <Tab
                 key={index}

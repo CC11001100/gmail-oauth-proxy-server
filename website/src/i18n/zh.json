@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "首页",
-    "documentation": "文档",
+    "documentation": "API文档",
     "parameterEditor": "参数编辑器",
     "download": "下载"
   },
@@ -50,28 +50,141 @@
     "apiSpec": "API规范",
     "configuration": "配置",
     "authentication": "认证",
-    "examples": "示例"
+    "examples": "示例",
+    "header": {
+      "title": "Gmail OAuth 代理服务器",
+      "subtitle": "安全的Gmail API集成OAuth令牌交换代理服务",
+      "description": "您的应用程序与Google OAuth端点之间的安全中间层，通过双重认证和IP白名单提供增强的安全性。"
+    },
+    "features": {
+      "title": "核心特性",
+      "dualAuth": {
+        "title": "双重认证",
+        "description": "API密钥和IP白名单认证，提供增强的安全性"
+      },
+      "httpsEnforcement": {
+        "title": "HTTPS强制",
+        "description": "在生产环境中强制安全通信"
+      },
+      "ipWhitelist": {
+        "title": "IP白名单",
+        "description": "CIDR格式和单个IP访问管理控制"
+      },
+      "logSanitization": {
+        "title": "日志脱敏",
+        "description": "自动保护日志中的敏感数据"
+      }
+    },
+    "overview": {
+      "title": "概述",
+      "description1": "Gmail OAuth代理服务器是一个安全的代理服务，为Gmail API集成提供OAuth令牌交换。它在您的应用程序和Google OAuth端点之间提供安全的中间层，确保敏感的OAuth凭据永远不会暴露给您的最终用户。",
+      "description2": "服务器充当安全桥梁，代表您的应用程序处理OAuth流程，同时通过API密钥认证和IP地址白名单维护严格的安全控制。"
+    },
+    "apiEndpoints": {
+      "title": "API端点",
+      "token": {
+        "method": "POST",
+        "path": "/token",
+        "description": "Gmail API集成的OAuth令牌交换端点",
+        "headers": "必需请求头：",
+        "requestBody": "请求体参数：",
+        "responseStatus": "响应状态码："
+      },
+      "health": {
+        "method": "GET",
+        "path": "/health",
+        "description": "用于监控和负载均衡器的健康检查端点"
+      }
+    },
+    "authentication": {
+      "title": "认证",
+      "methods": "认证方法",
+      "description": "服务器支持两种认证方法，可以单独使用或组合使用：",
+      "apiKey": {
+        "title": "1. API密钥认证",
+        "description": "通过HTTP请求头X-API-Key进行认证：",
+        "note": "API密钥可以通过环境变量设置或在开发时自动生成。"
+      },
+      "ipWhitelist": {
+        "title": "2. IP白名单认证",
+        "description": "基于客户端IP地址的访问控制，支持：",
+        "individualIP": "单个IP地址：",
+        "cidrNetworks": "CIDR网络：",
+        "ipv6Addresses": "IPv6地址：",
+        "note": "多个IP可以指定为逗号分隔的值。"
+      },
+      "securityNote": "安全提示：对于生产使用，建议同时使用两种认证方法以获得最大安全性。"
+    },
+    "configuration": {
+      "title": "配置",
+      "envVars": "环境变量",
+      "variable": "变量",
+      "type": "类型",
+      "required": "必需",
+      "default": "默认值",
+      "description": "描述"
+    },
+    "examples": {
+      "title": "使用示例",
+      "quickStart": "快速开始示例",
+      "apiKeyOnly": "仅使用API密钥启动：",
+      "ipWhitelistOnly": "仅使用IP白名单启动：",
+      "dualAuth": "使用双重认证启动：",
+      "configFile": "使用配置文件："
+    },
+    "common": {
+      "yes": "是",
+      "no": "否",
+      "required": "必需",
+      "optional": "可选"
+    }
   },
   "parameterEditor": {
     "title": "参数编辑器",
     "description": "可视化配置Gmail OAuth代理服务器参数并生成命令",
+    "howToUse": {
+      "title": "使用方法",
+      "description": "在左侧配置您的服务器参数，生成的命令将出现在右侧。您可以复制任何生成的输出来用于部署。"
+    },
     "form": {
+      "title": "服务器配置",
       "apiKey": "API密钥",
       "apiKeyPlaceholder": "输入您的API密钥（可选，留空时自动生成）",
+      "apiKeyHelper": "API密钥会自动生成并存储在浏览器中，点击骰子按钮可重新生成",
+      "regenerateApiKey": "重新生成API密钥",
       "ipWhitelist": "IP白名单",
       "ipWhitelistPlaceholder": "输入IP地址或CIDR范围，每行一个",
+      "ipWhitelistHelper": "示例：192.168.1.0/24, 10.0.0.1, ::1",
       "port": "端口",
+      "portHelper": "默认：8080",
       "environment": "环境",
       "logLevel": "日志级别",
-      "timeout": "超时时间（秒）"
+      "timeout": "超时时间（秒）",
+      "timeoutHelper": "默认：10秒",
+      "errors": {
+        "title": "请修复以下错误"
+      }
     },
     "output": {
       "title": "生成的配置",
+      "tabsLabel": "输出标签页",
       "commandLine": "命令行",
       "environmentVariables": "环境变量",
       "configFile": "配置文件（YAML）",
       "copy": "复制到剪贴板",
       "copied": "已复制！"
+    },
+    "options": {
+      "environment": {
+        "development": "开发环境",
+        "production": "生产环境"
+      },
+      "logLevel": {
+        "debug": "调试",
+        "info": "信息",
+        "warn": "警告",
+        "error": "错误"
+      }
     }
   },
   "download": {

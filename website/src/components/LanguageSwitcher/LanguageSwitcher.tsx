@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Menu, MenuItem, ListItemText } from '@mui/material';
 import { Language as LanguageIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import { changeLanguage } from '../../i18n';
 import styles from './LanguageSwitcher.module.css';
 
 const LanguageSwitcher: React.FC = () => {
@@ -18,7 +19,8 @@ const LanguageSwitcher: React.FC = () => {
   };
 
   const handleLanguageChange = (language: string) => {
-    i18n.changeLanguage(language);
+    // 使用新的changeLanguage函数，它会自动保存到LocalStorage
+    changeLanguage(language);
     handleClose();
   };
 

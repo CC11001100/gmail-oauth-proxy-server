@@ -19,9 +19,7 @@ const ParameterEditorPage: React.FC = () => {
         
         <Alert severity="info" className={styles.infoAlert}>
           <Typography variant="body2">
-            <strong>How to use:</strong> Configure your server parameters on the left, 
-            and the generated commands will appear on the right. You can copy any of the 
-            generated outputs to use in your deployment.
+            <strong>{t('parameterEditor.howToUse.title')}:</strong> {t('parameterEditor.howToUse.description')}
           </Typography>
         </Alert>
       </Box>

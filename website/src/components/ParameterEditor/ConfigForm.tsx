@@ -100,13 +100,13 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
   return (
     <Box>
       <Typography variant="h6" gutterBottom>
-        Server Configuration
+        {t('parameterEditor.form.title')}
       </Typography>
       
       {errors.length > 0 && (
         <Alert severity="error" sx={{ mb: 3 }}>
           <Typography variant="body2">
-            Please fix the following errors:
+            {t('parameterEditor.form.errors.title')}:
           </Typography>
           <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
             {errors.map((error, index) => (
@@ -125,16 +125,16 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             value={config.apiKey || ''}
             onChange={handleTextChange('apiKey')}
             variant="outlined"
-            helperText="API密钥会自动生成并存储在浏览器中，点击骰子按钮可重新生成"
+            helperText={t('parameterEditor.form.apiKeyHelper')}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <Tooltip title="重新生成API密钥">
+                  <Tooltip title={t('parameterEditor.form.regenerateApiKey')}>
                     <IconButton
                       onClick={handleRegenerateApiKey}
                       edge="end"
                       color="primary"
-                      aria-label="重新生成API密钥"
+                      aria-label={t('parameterEditor.form.regenerateApiKey')}
                     >
                       <CasinoIcon />
                     </IconButton>
@@ -156,7 +156,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             onChange={handleTextChange('ipWhitelist')}
             variant="outlined"
             error={!!getFieldError('ipWhitelist')}
-            helperText={getFieldError('ipWhitelist') || 'Examples: 192.168.1.0/24, 10.0.0.1, ::1'}
+            helperText={getFieldError('ipWhitelist') || t('parameterEditor.form.ipWhitelistHelper')}
           />
         </Grid>
 
@@ -169,7 +169,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             onChange={handleTextChange('port')}
             variant="outlined"
             error={!!getFieldError('port')}
-            helperText={getFieldError('port') || 'Default: 8080'}
+            helperText={getFieldError('port') || t('parameterEditor.form.portHelper')}
             inputProps={{ min: 1, max: 65535 }}
           />
         </Grid>
@@ -183,7 +183,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             onChange={handleTextChange('timeout')}
             variant="outlined"
             error={!!getFieldError('timeout')}
-            helperText={getFieldError('timeout') || 'Default: 10 seconds'}
+            helperText={getFieldError('timeout') || t('parameterEditor.form.timeoutHelper')}
             inputProps={{ min: 1, max: 300 }}
           />
         </Grid>
@@ -198,7 +198,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             >
               {ENVIRONMENT_OPTIONS.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+                  {t(`parameterEditor.options.environment.${option.value}`)}
                 </MenuItem>
               ))}
             </Select>
@@ -215,7 +215,7 @@ const ConfigForm: React.FC<ConfigFormProps> = ({ config, onChange, errors }) => 
             >
               {LOG_LEVEL_OPTIONS.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+                  {t(`parameterEditor.options.logLevel.${option.value}`)}
                 </MenuItem>
               ))}
             </Select>

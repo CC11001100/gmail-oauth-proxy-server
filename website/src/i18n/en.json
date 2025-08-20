@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Home",
-    "documentation": "Documentation",
+    "documentation": "API Documentation",
     "parameterEditor": "Parameter Editor",
     "download": "Download"
   },
@@ -50,28 +50,141 @@
     "apiSpec": "API Specification",
     "configuration": "Configuration",
     "authentication": "Authentication",
-    "examples": "Examples"
+    "examples": "Examples",
+    "header": {
+      "title": "Gmail OAuth Proxy Server",
+      "subtitle": "Secure OAuth token exchange proxy service for Gmail API integration",
+      "description": "A secure intermediary layer between your application and Google's OAuth endpoints, providing enhanced security through dual authentication and IP whitelisting."
+    },
+    "features": {
+      "title": "Key Features",
+      "dualAuth": {
+        "title": "Dual Authentication",
+        "description": "API Key and IP whitelist authentication for enhanced security"
+      },
+      "httpsEnforcement": {
+        "title": "HTTPS Enforcement",
+        "description": "Secure communication enforced in production environments"
+      },
+      "ipWhitelist": {
+        "title": "IP Whitelist",
+        "description": "CIDR format and individual IP control for access management"
+      },
+      "logSanitization": {
+        "title": "Log Sanitization",
+        "description": "Automatic sensitive data protection in logs"
+      }
+    },
+    "overview": {
+      "title": "Overview",
+      "description1": "Gmail OAuth Proxy Server is a secure proxy service that facilitates OAuth token exchange for Gmail API integration. It provides a secure intermediary layer between your application and Google's OAuth endpoints, ensuring that sensitive OAuth credentials are never exposed to your end users.",
+      "description2": "The server acts as a secure bridge, handling the OAuth flow on behalf of your application while maintaining strict security controls through API key authentication and IP address whitelisting."
+    },
+    "apiEndpoints": {
+      "title": "API Endpoints",
+      "token": {
+        "method": "POST",
+        "path": "/token",
+        "description": "OAuth token exchange endpoint for Gmail API integration",
+        "headers": "Required Headers:",
+        "requestBody": "Request Body Parameters:",
+        "responseStatus": "Response Status Codes:"
+      },
+      "health": {
+        "method": "GET",
+        "path": "/health",
+        "description": "Health check endpoint for monitoring and load balancers"
+      }
+    },
+    "authentication": {
+      "title": "Authentication",
+      "methods": "Authentication Methods",
+      "description": "The server supports two authentication methods that can be used individually or in combination:",
+      "apiKey": {
+        "title": "1. API Key Authentication",
+        "description": "Authenticate via HTTP header X-API-Key:",
+        "note": "The API key can be set via environment variable or auto-generated for development."
+      },
+      "ipWhitelist": {
+        "title": "2. IP Whitelist Authentication",
+        "description": "Access control based on client IP address, supports:",
+        "individualIP": "Individual IP addresses:",
+        "cidrNetworks": "CIDR networks:",
+        "ipv6Addresses": "IPv6 addresses:",
+        "note": "Multiple IPs can be specified as comma-separated values."
+      },
+      "securityNote": "Security Note: For production use, it's recommended to use both authentication methods together for maximum security."
+    },
+    "configuration": {
+      "title": "Configuration",
+      "envVars": "Environment Variables",
+      "variable": "Variable",
+      "type": "Type",
+      "required": "Required",
+      "default": "Default",
+      "description": "Description"
+    },
+    "examples": {
+      "title": "Usage Examples",
+      "quickStart": "Quick Start Examples",
+      "apiKeyOnly": "Start with API Key only:",
+      "ipWhitelistOnly": "Start with IP whitelist only:",
+      "dualAuth": "Start with dual authentication:",
+      "configFile": "Using configuration file:"
+    },
+    "common": {
+      "yes": "Yes",
+      "no": "No",
+      "required": "required",
+      "optional": "optional"
+    }
   },
   "parameterEditor": {
     "title": "Parameter Editor",
     "description": "Configure your Gmail OAuth Proxy Server parameters visually and generate commands",
+    "howToUse": {
+      "title": "How to use",
+      "description": "Configure your server parameters on the left, and the generated commands will appear on the right. You can copy any of the generated outputs to use in your deployment."
+    },
     "form": {
+      "title": "Server Configuration",
       "apiKey": "API Key",
       "apiKeyPlaceholder": "Enter your API key (optional, auto-generated if empty)",
+      "apiKeyHelper": "API key will be automatically generated and stored in browser, click dice button to regenerate",
+      "regenerateApiKey": "Regenerate API Key",
       "ipWhitelist": "IP Whitelist",
       "ipWhitelistPlaceholder": "Enter IP addresses or CIDR ranges, one per line",
+      "ipWhitelistHelper": "Examples: 192.168.1.0/24, 10.0.0.1, ::1",
       "port": "Port",
+      "portHelper": "Default: 8080",
       "environment": "Environment",
       "logLevel": "Log Level",
-      "timeout": "Timeout (seconds)"
+      "timeout": "Timeout (seconds)",
+      "timeoutHelper": "Default: 10 seconds",
+      "errors": {
+        "title": "Please fix the following errors"
+      }
     },
     "output": {
       "title": "Generated Configuration",
+      "tabsLabel": "output tabs",
       "commandLine": "Command Line",
       "environmentVariables": "Environment Variables",
       "configFile": "Configuration File (YAML)",
       "copy": "Copy to Clipboard",
       "copied": "Copied!"
+    },
+    "options": {
+      "environment": {
+        "development": "Development",
+        "production": "Production"
+      },
+      "logLevel": {
+        "debug": "Debug",
+        "info": "Info",
+        "warn": "Warning",
+        "error": "Error"
+      }
     }
   },
   "download": {

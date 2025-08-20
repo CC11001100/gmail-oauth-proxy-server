@@ -22,8 +22,18 @@ func Load() (*Config, error) {
 	return LoadWithAutoGenerate(false)
 }
 
+// LoadForDisplay 加载配置用于显示，不进行验证
+func LoadForDisplay() (*Config, error) {
+	return loadConfig(false, false)
+}
+
 // LoadWithAutoGenerate 加载配置，支持自动生成API Key
 func LoadWithAutoGenerate(autoGenerate bool) (*Config, error) {
+	return loadConfig(autoGenerate, true)
+}
+
+// loadConfig 内部配置加载函数
+func loadConfig(autoGenerate bool, validate bool) (*Config, error) {
 	// 设置配置文件名和路径
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
@@ -85,8 +95,8 @@ func LoadWithAutoGenerate(autoGenerate bool) (*Config, error) {
 		}
 	}
 
-	// 验证鉴权配置（至少需要配置一种鉴权方式）
-	if config.APIKey == "" && len(config.IPWhitelist) == 0 {
+	// 只有在需要验证时才进行鉴权配置验证
+	if validate && config.APIKey == "" && len(config.IPWhitelist) == 0 {
 		return nil, fmt.Errorf("at least one authentication method is required: API key or IP whitelist")
 	}
 

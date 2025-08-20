@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gmail-oauth-proxy-server/internal/config"
 	"net"
+	"os"
 	"strings"
 
 	"github.com/fatih/color"
@@ -111,8 +112,8 @@ func init() {
 func showConfig(cmd *cobra.Command, args []string) {
 	color.Cyan("🔧 正在加载配置信息...")
 
-	// 加载配置
-	cfg, err := config.Load()
+	// 加载配置用于显示（不进行验证）
+	cfg, err := config.LoadForDisplay()
 	if err != nil {
 		color.Red("❌ 配置加载失败: %v", err)
 		return
@@ -174,7 +175,7 @@ func showConfig(cmd *cobra.Command, args []string) {
 	}
 
 	for _, envVar := range envVars {
-		value := viper.GetString(envVar)
+		value := os.Getenv(envVar)
 		if value != "" {
 			// 脱敏处理敏感环境变量
 			if envVar == "OAUTH_PROXY_API_KEY" && len(value) > 8 {
@@ -211,10 +212,10 @@ func showConfig(cmd *cobra.Command, args []string) {
 func validateConfig(cmd *cobra.Command, args []string) {
 	color.Cyan("🔍 正在验证配置文件...")
 
-	// 尝试加载配置
-	cfg, err := config.Load()
+	// 加载配置用于验证（不进行内置验证）
+	cfg, err := config.LoadForDisplay()
 	if err != nil {
-		color.Red("❌ 配置验证失败:")
+		color.Red("❌ 配置加载失败:")
 		color.Red("   %v", err)
 		return
 	}
@@ -223,10 +224,21 @@ func validateConfig(cmd *cobra.Command, args []string) {
 	errors := []string{}
 
 	// 验证鉴权配置
-	if cfg.APIKey == "" && len(cfg.IPWhitelist) == 0 {
+	hasAPIKey := cfg.APIKey != ""
+	hasIPWhitelist := len(cfg.IPWhitelist) > 0
+
+	// 如果配置中没有API Key，检查缓存中是否有
+	if !hasAPIKey {
+		if cache, err := config.NewConfigCache(); err == nil && cache.CacheExists() {
+			hasAPIKey = true
+		}
+	}
+
+	if !hasAPIKey && !hasIPWhitelist {
 		errors = append(errors, "未配置任何鉴权方式 (需要配置API Key或IP白名单)")
 		errors = append(errors, "  • API Key: 通过 --api-key 参数或 OAUTH_PROXY_API_KEY 环境变量设置")
 		errors = append(errors, "  • IP白名单: 通过 --ip-whitelist 参数或 OAUTH_PROXY_IP_WHITELIST 环境变量设置")
+		errors = append(errors, "  • 或者启动服务器时将自动生成API Key")
 	}
 
 	if cfg.Port == "" {
@@ -301,6 +313,8 @@ func validateConfig(cmd *cobra.Command, args []string) {
 		// 显示鉴权配置摘要
 		if cfg.APIKey != "" {
 			color.White("   • API Key: 已配置")
+		} else if cache, err := config.NewConfigCache(); err == nil && cache.CacheExists() {
+			color.White("   • API Key: 已缓存")
 		}
 		if len(cfg.IPWhitelist) > 0 {
 			color.White("   • IP白名单: %d个规则", len(cfg.IPWhitelist))

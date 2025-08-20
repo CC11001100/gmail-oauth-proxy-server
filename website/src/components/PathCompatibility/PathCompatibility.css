@@ -1,0 +1,9 @@
+/* PathCompatibility组件样式 */
+.path-compatibility {
+  /* 这个组件主要是逻辑处理，不需要特殊样式 */
+}
+
+/* 路径重定向时的过渡效果 */
+.path-redirect {
+  transition: all 0.3s ease-in-out;
+} 

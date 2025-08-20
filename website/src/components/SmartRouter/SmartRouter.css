@@ -1,0 +1,9 @@
+/* SmartRouter组件样式 */
+.smart-router {
+  /* 这个组件主要是逻辑处理，不需要特殊样式 */
+}
+
+/* 路由切换时的过渡效果 */
+.route-transition {
+  transition: all 0.3s ease-in-out;
+} 

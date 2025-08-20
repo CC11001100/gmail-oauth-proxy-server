@@ -1,5 +1,4 @@
 
-import { Routes, Route } from 'react-router-dom'
 import { Box, useMediaQuery } from '@mui/material'
 import { useState, useEffect } from 'react'
 import Header from './components/Header/Header'
@@ -8,6 +7,9 @@ import Home from './pages/Home/Home'
 import Documentation from './pages/Documentation/Documentation'
 import ParameterEditorPage from './pages/ParameterEditor/ParameterEditorPage'
 import Download from './pages/Download/Download'
+import NotFound from './pages/NotFound/NotFound'
+import PathCompatibility from './components/PathCompatibility/PathCompatibility'
+import SmartRouter from './components/SmartRouter/SmartRouter'
 import { lightTheme, darkTheme } from './theme/theme'
 import { ThemeProvider } from '@mui/material/styles'
 import { CssBaseline } from '@mui/material'
@@ -34,21 +36,26 @@ function App() {
 
   const currentTheme = isDarkMode ? darkTheme : lightTheme;
 
+  // 路由配置
+  const routes = [
+    { path: '/', element: <Home /> },
+    { path: '/documentation', element: <Documentation /> },
+    { path: '/parameter-editor', element: <ParameterEditorPage /> },
+    { path: '/download', element: <Download /> }
+  ];
+
   return (
     <ThemeProvider theme={currentTheme}>
       <CssBaseline />
-      <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <Header isDarkMode={isDarkMode} onThemeToggle={handleThemeToggle} />
-        <Box component="main" sx={{ flexGrow: 1 }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/documentation" element={<Documentation />} />
-            <Route path="/parameter-editor" element={<ParameterEditorPage />} />
-            <Route path="/download" element={<Download />} />
-          </Routes>
+      <PathCompatibility>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          <Header isDarkMode={isDarkMode} onThemeToggle={handleThemeToggle} />
+          <Box component="main" sx={{ flexGrow: 1 }}>
+            <SmartRouter routes={routes} fallback={<NotFound />} />
+          </Box>
+          <Footer />
         </Box>
-        <Footer />
-      </Box>
+      </PathCompatibility>
     </ThemeProvider>
   )
 }

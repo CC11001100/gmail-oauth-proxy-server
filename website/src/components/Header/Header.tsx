@@ -153,7 +153,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode = false, onThemeToggle }) =>
                       fontSize: '1rem',
                       px: 2,
                       py: 1,
-                      borderRadius: 2,
+                      borderRadius: 0,
                       transition: 'all 0.2s ease',
                       '&:hover': {
                         backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -171,7 +171,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode = false, onThemeToggle }) =>
                         color="inherit"
                         onClick={onThemeToggle}
                         sx={{
-                          borderRadius: 2,
+                          borderRadius: 0,
                           '&:hover': {
                             backgroundColor: 'rgba(255, 255, 255, 0.1)',
                           },
@@ -190,7 +190,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode = false, onThemeToggle }) =>
                       rel="noopener noreferrer"
                       color="inherit"
                       sx={{
-                        borderRadius: 2,
+                        borderRadius: 0,
                         '&:hover': {
                           backgroundColor: 'rgba(255, 255, 255, 0.1)',
                         },
@@ -218,7 +218,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode = false, onThemeToggle }) =>
           '& .MuiDrawer-paper': { 
             boxSizing: 'border-box', 
             width: 280,
-            borderRadius: '0 20px 20px 0',
+            borderRadius: '0 4px 4px 0',
           },
         }}
       >

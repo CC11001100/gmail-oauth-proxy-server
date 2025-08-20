@@ -1,7 +1,7 @@
 .featureCard {
   height: 100%;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 24px;
+  border-radius: 4px;
   border: 1px solid rgba(220, 38, 38, 0.1);
   background: linear-gradient(135deg, #ffffff, #f8fafc);
   position: relative;
@@ -47,7 +47,7 @@
 .iconWrapper {
   width: 80px;
   height: 80px;
-  border-radius: 20px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,7 +59,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 20px;
+  border-radius: 4px;
   padding: 2px;
   background: linear-gradient(135deg, transparent, rgba(220, 38, 38, 0.1));
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -141,7 +141,7 @@
 
 .chip {
   font-weight: 500;
-  border-radius: 12px;
+  border-radius: 2px;
   transition: all 0.3s ease;
 }
 

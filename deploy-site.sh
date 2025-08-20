@@ -80,6 +80,13 @@ fi
 # 返回根目录
 cd ..
 
+# 创建临时目录保存构建文件
+echo "📁 创建临时目录保存构建文件..."
+temp_build_dir=$(mktemp -d)
+cp -r website/dist/* "$temp_build_dir/"
+
+echo "📋 构建文件已保存到临时目录: $temp_build_dir"
+
 # 检查gh-pages分支是否存在
 if ! git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
     echo "🌐 创建 gh-pages 分支..."
@@ -98,7 +105,11 @@ fi
 
 # 复制构建后的文件到gh-pages分支
 echo "📋 复制构建文件到 gh-pages 分支..."
-cp -r website/dist/* .
+cp -r "$temp_build_dir"/* .
+
+# 清理临时目录
+echo "🧹 清理临时目录..."
+rm -rf "$temp_build_dir"
 
 # 添加所有文件到Git
 echo "📝 添加文件到Git..."

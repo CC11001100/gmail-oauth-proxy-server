@@ -10,6 +10,14 @@
     "subtitle": "使用Go和Gin框架实现的安全谷歌OAuth代理服务",
     "getStarted": "开始使用",
     "learnMore": "了解更多",
+    "problem": {
+      "title": "我们解决了什么问题？",
+      "description": "当您的服务部署在国内服务器时，如果需要提供GMail登录功能，您会遇到网络访问限制的问题。Google的OAuth服务在国外，而您的用户在国内，直接访问会遇到连接困难。",
+      "solution": {
+        "title": "解决方案",
+        "description": "Gmail OAuth代理服务器就是用来做中继的！它在您的国内服务器和Google OAuth服务之间建立一个安全的代理桥梁，让您的用户可以通过国内服务器间接访问GMail登录功能，同时保持数据安全和访问控制。"
+      }
+    },
     "features": {
       "title": "核心特性",
       "dualAuth": {

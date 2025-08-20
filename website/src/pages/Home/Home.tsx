@@ -10,6 +10,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Alert,
 } from '@mui/material';
 import {
   Security as SecurityIcon,
@@ -21,6 +22,7 @@ import {
   Download as DownloadIcon,
   PlayArrow as PlayArrowIcon,
   CheckCircle as CheckCircleIcon,
+  Help as HelpIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -123,6 +125,26 @@ const Home: React.FC = () => {
           </Box>
         </Container>
       </Box>
+
+      {/* Problem Statement Section */}
+      <Container maxWidth="lg" className={styles.section}>
+        <Box className={styles.problemStatement}>
+          <Box className={styles.problemHeader}>
+            <HelpIcon className={styles.problemIcon} />
+            <Typography variant="h3" component="h2" className={styles.problemTitle}>
+              {t('home.problem.title')}
+            </Typography>
+          </Box>
+          <Typography variant="h6" component="p" className={styles.problemDescription}>
+            {t('home.problem.description')}
+          </Typography>
+          <Alert severity="info" className={styles.problemAlert}>
+            <Typography variant="body1">
+              <strong>{t('home.problem.solution.title')}:</strong> {t('home.problem.solution.description')}
+            </Typography>
+          </Alert>
+        </Box>
+      </Container>
 
       {/* Features Section */}
       <Container maxWidth="lg" className={styles.section}>

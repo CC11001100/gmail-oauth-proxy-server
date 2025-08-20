@@ -10,6 +10,14 @@
     "subtitle": "A secure Google OAuth proxy service implemented with Go and Gin framework",
     "getStarted": "Get Started",
     "learnMore": "Learn More",
+    "problem": {
+      "title": "What Problem Do We Solve?",
+      "description": "When your service is deployed on domestic servers but needs to provide GMail login functionality, you'll encounter network access restrictions. Google's OAuth services are located overseas, while your users are domestic, making direct access difficult.",
+      "solution": {
+        "title": "Solution",
+        "description": "The Gmail OAuth Proxy Server acts as a relay! It establishes a secure proxy bridge between your domestic server and Google's OAuth services, allowing your users to access GMail login functionality indirectly through your domestic server while maintaining data security and access control."
+      }
+    },
     "features": {
       "title": "Key Features",
       "dualAuth": {

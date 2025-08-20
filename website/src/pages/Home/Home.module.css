@@ -165,6 +165,68 @@
   }
 }
 
+/* 问题说明部分 */
+.problemStatement {
+  text-align: center;
+  padding: 60px 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 8px;
+  margin-bottom: 40px;
+}
+
+.problemHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.problemIcon {
+  font-size: 3rem !important;
+  color: #dc2626;
+  margin-bottom: 16px;
+}
+
+.problemTitle {
+  color: #1e293b;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.problemDescription {
+  color: #475569;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto 32px;
+  font-weight: 500;
+}
+
+.problemAlert {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left;
+  border-radius: 4px;
+}
+
+.problemAlert .MuiAlert-message {
+  width: 100%;
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+  .problemStatement {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  }
+  
+  .problemTitle {
+    color: #f1f5f9;
+  }
+  
+  .problemDescription {
+    color: #cbd5e1;
+  }
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .heroTitle {
@@ -201,6 +263,22 @@
   
   .section {
     padding: 80px 0;
+  }
+
+  .problemStatement {
+    padding: 40px 20px;
+  }
+  
+  .problemIcon {
+    font-size: 2.5rem !important;
+  }
+  
+  .problemTitle {
+    font-size: 1.75rem;
+  }
+  
+  .problemDescription {
+    font-size: 1.1rem;
   }
 }
 

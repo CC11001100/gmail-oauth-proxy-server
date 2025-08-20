@@ -65,6 +65,28 @@
   font-size: 0.875rem;
 }
 
+.stepCode {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.stepCode :global(.codeBlock) {
+  margin: 8px 0;
+}
+
+.stepCode :global(.codeHeader) {
+  padding: 4px 12px;
+}
+
+.stepCode :global(.codeContent) {
+  padding: 8px 12px;
+}
+
+.stepCode :global(.pre) {
+  padding: 8px;
+  font-size: 12px;
+}
+
 .sourceCodeHeader {
   display: flex;
   align-items: center;

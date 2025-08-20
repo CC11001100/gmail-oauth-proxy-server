@@ -21,6 +21,10 @@ export const generateCommands = (config: ServerConfig): GeneratedOutput => {
     commandParts.push(`--log-level ${config.logLevel}`);
   }
   
+  if (config.timeout !== 10) {
+    commandParts.push(`--timeout ${config.timeout}`);
+  }
+  
   if (config.ipWhitelist.length > 0) {
     config.ipWhitelist.forEach(ip => {
       commandParts.push(`--ip-whitelist ${ip}`);

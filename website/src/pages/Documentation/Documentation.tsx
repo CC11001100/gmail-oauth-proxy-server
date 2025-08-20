@@ -31,6 +31,7 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import styles from './Documentation.module.css';
+import SyntaxHighlighter from '../../components/SyntaxHighlighter/SyntaxHighlighter';
 
 const Documentation: React.FC = () => {
   const { t } = useTranslation();
@@ -277,8 +278,8 @@ const Documentation: React.FC = () => {
               <Typography variant="body2">
                 <strong>Example Request:</strong>
               </Typography>
-              <pre className={styles.codeBlock}>
-{`curl -X POST http://localhost:8080/token \\
+              <SyntaxHighlighter
+                code={`curl -X POST http://localhost:8080/token \\
   -H "Content-Type: application/json" \\
   -H "X-API-Key: your-secret-api-key" \\
   -d '{
@@ -288,7 +289,8 @@ const Documentation: React.FC = () => {
     "redirect_uri": "https://yourdomain.com/auth/callback",
     "grant_type": "authorization_code"
   }'`}
-              </pre>
+                language="bash"
+              />
             </Alert>
           </AccordionDetails>
         </Accordion>
@@ -316,9 +318,10 @@ const Documentation: React.FC = () => {
               <Typography variant="body2" paragraph>
                 {t('documentation.authentication.apiKey.description')}
               </Typography>
-              <pre className={styles.codeBlock}>
-{`curl -H "X-API-Key: your-secret-api-key" http://localhost:8080/token`}
-              </pre>
+              <SyntaxHighlighter
+                code={`curl -H "X-API-Key: your-secret-api-key" http://localhost:8080/token`}
+                language="bash"
+              />
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                 {t('documentation.authentication.apiKey.note')}
               </Typography>
@@ -413,39 +416,42 @@ const Documentation: React.FC = () => {
               <Typography variant="subtitle1" gutterBottom>
                 {t('documentation.examples.apiKeyOnly')}
               </Typography>
-              <pre className={styles.codeBlock}>
-{`export OAUTH_PROXY_API_KEY="your-secret-api-key"
+              <SyntaxHighlighter
+                code={`export OAUTH_PROXY_API_KEY="your-secret-api-key"
 ./gmail-oauth-proxy server`}
-              </pre>
+                language="bash"
+              />
             </Box>
 
             <Box className={styles.example}>
               <Typography variant="subtitle1" gutterBottom>
                 {t('documentation.examples.ipWhitelistOnly')}
               </Typography>
-              <pre className={styles.codeBlock}>
-{`export OAUTH_PROXY_IP_WHITELIST="192.168.1.0/24,10.0.0.1,127.0.0.1"
+              <SyntaxHighlighter
+                code={`export OAUTH_PROXY_IP_WHITELIST="192.168.1.0/24,10.0.0.1,127.0.0.1"
 ./gmail-oauth-proxy server`}
-              </pre>
+                language="bash"
+              />
             </Box>
 
             <Box className={styles.example}>
               <Typography variant="subtitle1" gutterBottom>
                 {t('documentation.examples.dualAuth')}
               </Typography>
-              <pre className={styles.codeBlock}>
-{`export OAUTH_PROXY_API_KEY="your-secret-api-key"
+              <SyntaxHighlighter
+                code={`export OAUTH_PROXY_API_KEY="your-secret-api-key"
 export OAUTH_PROXY_IP_WHITELIST="192.168.1.0/24,10.0.0.1"
 ./gmail-oauth-proxy server --env production --log-level warn`}
-              </pre>
+                language="bash"
+              />
             </Box>
 
             <Box className={styles.example}>
               <Typography variant="subtitle1" gutterBottom>
                 {t('documentation.examples.configFile')}
               </Typography>
-              <pre className={styles.codeBlock}>
-{`# config.yaml
+              <SyntaxHighlighter
+                code={`# config.yaml
 api_key: "your-secret-api-key"
 ip_whitelist: "192.168.1.0/24,10.0.0.1"
 port: 8080
@@ -454,7 +460,8 @@ log_level: "warn"
 timeout: 30
 
 ./gmail-oauth-proxy server --config config.yaml`}
-              </pre>
+                language="yaml"
+              />
             </Box>
           </AccordionDetails>
         </Accordion>

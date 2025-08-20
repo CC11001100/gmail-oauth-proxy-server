@@ -48,17 +48,17 @@ const Footer: React.FC = () => {
   ];
 
   const features = [
-    { label: '双重认证', color: 'primary' as const },
-    { label: 'IP白名单', color: 'success' as const },
-    { label: 'HTTPS强制', color: 'info' as const },
-    { label: '日志脱敏', color: 'warning' as const },
+    { label: t('footer.features.dualAuth'), color: 'primary' as const },
+    { label: t('footer.features.ipWhitelist'), color: 'success' as const },
+    { label: t('footer.features.httpsEnforcement'), color: 'info' as const },
+    { label: t('footer.features.logSanitization'), color: 'warning' as const },
   ];
 
   return (
     <Box component="footer" className={styles.footer}>
       <Container maxWidth="lg">
         <Grid container spacing={6} sx={{ py: 6 }}>
-          {/* 项目信息 */}
+          {/* Project Info */}
           <Grid item xs={12} md={4}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
               <Box
@@ -96,10 +96,10 @@ const Footer: React.FC = () => {
             </Stack>
           </Grid>
 
-          {/* 快速链接 */}
+          {/* Quick Links */}
           <Grid item xs={12} md={4}>
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>
-              快速链接
+              {t('footer.quickLinks')}
             </Typography>
             <Stack spacing={2}>
               {footerLinks.map((link, index) => (
@@ -129,20 +129,20 @@ const Footer: React.FC = () => {
             </Stack>
           </Grid>
 
-          {/* 技术栈 */}
+          {/* Tech Stack */}
           <Grid item xs={12} md={4}>
             <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold', mb: 3 }}>
-              技术栈
+              {t('footer.techStack')}
             </Typography>
             <Stack spacing={2}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 <CodeIcon color="primary" />
                 <Box>
                   <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                    Go + Gin Framework
+                    {t('footer.tech.go.title')}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    高性能后端服务
+                    {t('footer.tech.go.description')}
                   </Typography>
                 </Box>
               </Box>
@@ -150,10 +150,10 @@ const Footer: React.FC = () => {
                 <SecurityIcon color="success" />
                 <Box>
                   <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                    OAuth 2.0
+                    {t('footer.tech.oauth.title')}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    安全认证协议
+                    {t('footer.tech.oauth.description')}
                   </Typography>
                 </Box>
               </Box>
@@ -161,10 +161,10 @@ const Footer: React.FC = () => {
                 <StarIcon color="warning" />
                 <Box>
                   <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                    MIT License
+                    {t('footer.tech.license.title')}
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
-                    开源免费使用
+                    {t('footer.tech.license.description')}
                   </Typography>
                 </Box>
               </Box>

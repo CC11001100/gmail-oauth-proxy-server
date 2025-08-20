@@ -201,7 +201,71 @@
     "latest": "Latest Release",
     "platforms": "Available Platforms",
     "checksums": "Checksums",
-    "sourceCode": "Source Code"
+    "sourceCode": "Source Code",
+    "installationMethods": "Installation Methods",
+    "verification": "Verification",
+    "verificationDescription": "All releases include SHA256 checksums for verification. After downloading, verify the integrity of your download:",
+    "downloadButton": "Download",
+    "viewOnGitHub": "View on GitHub",
+    "allReleases": "All Releases",
+    "reportIssues": "Report Issues",
+    "sourceCodeDescription": "Access the complete source code, contribute to the project, or report issues.",
+    "methods": {
+      "prebuilt": {
+        "title": "Download Pre-built Binaries",
+        "description": "Download and extract the binary for your platform",
+        "steps": [
+          "Download the appropriate binary for your platform",
+          "Extract the archive: tar -xzf filename.tar.gz",
+          "Make executable: chmod +x gmail-oauth-proxy",
+          "Run: ./gmail-oauth-proxy server"
+        ]
+      },
+      "source": {
+        "title": "Build from Source",
+        "description": "Compile from source code using Go",
+        "steps": [
+          "Clone: git clone https://github.com/cc11001100/gmail-oauth-proxy-server.git",
+          "Navigate: cd gmail-oauth-proxy-server",
+          "Install dependencies: go mod tidy",
+          "Build: go build -o gmail-oauth-proxy main.go"
+        ]
+      },
+      "go": {
+        "title": "Install with Go",
+        "description": "Install directly using Go toolchain",
+        "steps": [
+          "Run: go install github.com/cc11001100/gmail-oauth-proxy-server@latest",
+          "The binary will be available in your $GOPATH/bin"
+        ]
+      }
+    },
+    "platforms": {
+      "linuxAmd64": {
+        "name": "Linux AMD64",
+        "description": "For most Linux distributions (64-bit)"
+      },
+      "linuxArm64": {
+        "name": "Linux ARM64",
+        "description": "For ARM-based Linux systems (64-bit)"
+      },
+      "macosIntel": {
+        "name": "macOS Intel",
+        "description": "For Intel-based Mac computers"
+      },
+      "macosAppleSilicon": {
+        "name": "macOS Apple Silicon",
+        "description": "For M1/M2 Mac computers"
+      },
+      "windowsAmd64": {
+        "name": "Windows AMD64",
+        "description": "For Windows (64-bit)"
+      },
+      "freebsdAmd64": {
+        "name": "FreeBSD AMD64",
+        "description": "For FreeBSD systems (64-bit)"
+      }
+    }
   },
   "footer": {
     "description": "A secure Google OAuth proxy service",
@@ -211,7 +275,29 @@
       "releases": "Releases",
       "issues": "Issues"
     },
-    "copyright": "© 2024 Gmail OAuth Proxy Server. Licensed under MIT License."
+    "copyright": "© 2024 Gmail OAuth Proxy Server. Licensed under MIT License.",
+    "quickLinks": "Quick Links",
+    "techStack": "Tech Stack",
+    "features": {
+      "dualAuth": "Dual Authentication",
+      "ipWhitelist": "IP Whitelist",
+      "httpsEnforcement": "HTTPS Enforcement",
+      "logSanitization": "Log Sanitization"
+    },
+    "tech": {
+      "go": {
+        "title": "Go + Gin Framework",
+        "description": "High-performance backend service"
+      },
+      "oauth": {
+        "title": "OAuth 2.0",
+        "description": "Secure authentication protocol"
+      },
+      "license": {
+        "title": "MIT License",
+        "description": "Open source and free to use"
+      }
+    }
   },
   "common": {
     "language": "Language",

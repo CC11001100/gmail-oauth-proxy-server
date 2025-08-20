@@ -20,77 +20,65 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import styles from './Download.module.css';
+import CodeHighlight from '../../components/CodeHighlight';
 
 const Download: React.FC = () => {
   const { t } = useTranslation();
 
   const platforms = [
     {
-      name: 'Linux AMD64',
+      name: t('download.platforms.linuxAmd64.name'),
       icon: <ComputerIcon />,
       filename: 'gmail-oauth-proxy-server_VERSION_linux_amd64.tar.gz',
-      description: 'For most Linux distributions (64-bit)',
+      description: t('download.platforms.linuxAmd64.description'),
     },
     {
-      name: 'Linux ARM64',
+      name: t('download.platforms.linuxArm64.name'),
       icon: <ComputerIcon />,
       filename: 'gmail-oauth-proxy-server_VERSION_linux_arm64.tar.gz',
-      description: 'For ARM-based Linux systems (64-bit)',
+      description: t('download.platforms.linuxArm64.description'),
     },
     {
-      name: 'macOS Intel',
+      name: t('download.platforms.macosIntel.name'),
       icon: <AppleIcon />,
       filename: 'gmail-oauth-proxy-server_VERSION_darwin_amd64.tar.gz',
-      description: 'For Intel-based Mac computers',
+      description: t('download.platforms.macosIntel.description'),
     },
     {
-      name: 'macOS Apple Silicon',
+      name: t('download.platforms.macosAppleSilicon.name'),
       icon: <AppleIcon />,
       filename: 'gmail-oauth-proxy-server_VERSION_darwin_arm64.tar.gz',
-      description: 'For M1/M2 Mac computers',
+      description: t('download.platforms.macosAppleSilicon.description'),
     },
     {
-      name: 'Windows AMD64',
+      name: t('download.platforms.windowsAmd64.name'),
       icon: <AndroidIcon />,
       filename: 'gmail-oauth-proxy-server_VERSION_windows_amd64.tar.gz',
-      description: 'For Windows (64-bit)',
+      description: t('download.platforms.windowsAmd64.description'),
     },
     {
-      name: 'FreeBSD AMD64',
+      name: t('download.platforms.freebsdAmd64.name'),
       icon: <ComputerIcon />,
       filename: 'gmail-oauth-proxy-server_VERSION_freebsd_amd64.tar.gz',
-      description: 'For FreeBSD systems (64-bit)',
+      description: t('download.platforms.freebsdAmd64.description'),
     },
   ];
 
   const installationMethods = [
     {
-      title: 'Download Pre-built Binaries',
-      description: 'Download and extract the binary for your platform',
-      steps: [
-        'Download the appropriate binary for your platform',
-        'Extract the archive: tar -xzf filename.tar.gz',
-        'Make executable: chmod +x gmail-oauth-proxy',
-        'Run: ./gmail-oauth-proxy server',
-      ],
+      title: t('download.methods.prebuilt.title'),
+      description: t('download.methods.prebuilt.description'),
+      steps: t('download.methods.prebuilt.steps'),
     },
     {
-      title: 'Build from Source',
-      description: 'Compile from source code using Go',
-      steps: [
-        'Clone: git clone https://github.com/cc11001100/gmail-oauth-proxy-server.git',
-        'Navigate: cd gmail-oauth-proxy-server',
-        'Install dependencies: go mod tidy',
-        'Build: go build -o gmail-oauth-proxy main.go',
-      ],
+      title: t('download.methods.source.title'),
+      description: t('download.methods.source.description'),
+      steps: t('download.methods.source.steps'),
     },
     {
-      title: 'Install with Go',
-      description: 'Install directly using Go toolchain',
-      steps: [
-        'Run: go install github.com/cc11001100/gmail-oauth-proxy-server@latest',
-        'The binary will be available in your $GOPATH/bin',
-      ],
+      title: t('download.methods.go.title'),
+      description: t('download.methods.go.description'),
+      steps: t('download.methods.go.steps'),
     },
   ];
 
@@ -145,7 +133,7 @@ const Download: React.FC = () => {
                     rel="noopener noreferrer"
                     className={styles.downloadButton}
                   >
-                    Download
+                    {t('download.downloadButton')}
                   </Button>
                 </CardContent>
               </Card>
@@ -156,7 +144,7 @@ const Download: React.FC = () => {
 
       <Box className={styles.section}>
         <Typography variant="h4" gutterBottom>
-          Installation Methods
+          {t('download.installationMethods')}
         </Typography>
         <Grid container spacing={3}>
           {installationMethods.map((method, index) => (
@@ -170,11 +158,36 @@ const Download: React.FC = () => {
                     {method.description}
                   </Typography>
                   <Box component="ol" className={styles.stepsList}>
-                    {method.steps.map((step, stepIndex) => (
-                      <Typography key={stepIndex} component="li" variant="body2">
-                        {step}
-                      </Typography>
-                    ))}
+                    {Array.isArray(method.steps) && method.steps.map((step, stepIndex) => {
+                      // 检查步骤是否包含代码
+                      const hasCode = step.includes('tar -xzf') || 
+                                    step.includes('chmod +x') || 
+                                    step.includes('go ') || 
+                                    step.includes('git clone') ||
+                                    step.includes('cd ') ||
+                                    step.includes('./gmail-oauth-proxy');
+                      
+                      if (hasCode) {
+                        return (
+                          <Box key={stepIndex} component="li" sx={{ mb: 1 }}>
+                            <Typography variant="body2" component="span">
+                              {step.split(':')[0]}:
+                            </Typography>
+                            <CodeHighlight 
+                              code={step.split(':')[1] || step}
+                              language="bash"
+                              className={styles.stepCode}
+                            />
+                          </Box>
+                        );
+                      }
+                      
+                      return (
+                        <Typography key={stepIndex} component="li" variant="body2">
+                          {step}
+                        </Typography>
+                      );
+                    })}
                   </Box>
                 </CardContent>
               </Card>
@@ -192,37 +205,37 @@ const Download: React.FC = () => {
             <Box className={styles.sourceCodeHeader}>
               <CodeIcon />
               <Typography variant="h6">
-                GitHub Repository
+                {t('download.sourceCode')}
               </Typography>
             </Box>
             <Typography variant="body1" paragraph>
-              Access the complete source code, contribute to the project, or report issues.
+              {t('download.sourceCodeDescription')}
             </Typography>
             <Box className={styles.sourceCodeActions}>
-              <Button
-                variant="contained"
-                href="https://github.com/cc11001100/gmail-oauth-proxy-server"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                View on GitHub
-              </Button>
-              <Button
-                variant="outlined"
-                href="https://github.com/cc11001100/gmail-oauth-proxy-server/releases"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                All Releases
-              </Button>
-              <Button
-                variant="outlined"
-                href="https://github.com/cc11001100/gmail-oauth-proxy-server/issues"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Report Issues
-              </Button>
+                              <Button
+                  variant="contained"
+                  href="https://github.com/cc11001100/gmail-oauth-proxy-server"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('download.viewOnGitHub')}
+                </Button>
+                <Button
+                  variant="outlined"
+                  href="https://github.com/cc11001100/gmail-oauth-proxy-server/releases"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('download.allReleases')}
+                </Button>
+                <Button
+                  variant="outlined"
+                  href="https://github.com/cc11001100/gmail-oauth-proxy-server/issues"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t('download.reportIssues')}
+                </Button>
             </Box>
           </CardContent>
         </Card>
@@ -230,15 +243,13 @@ const Download: React.FC = () => {
 
       <Box className={styles.section}>
         <Typography variant="h4" gutterBottom>
-          Verification
+          {t('download.verification')}
         </Typography>
         <Typography variant="body1" paragraph>
-          All releases include SHA256 checksums for verification. After downloading, 
-          verify the integrity of your download:
+          {t('download.verificationDescription')}
         </Typography>
-        <Paper className={styles.codeBlock}>
-          <pre>
-{`# Download checksums
+        <CodeHighlight 
+          code={`# Download checksums
 wget https://github.com/cc11001100/gmail-oauth-proxy-server/releases/latest/download/checksums.txt
 
 # Verify (Linux/macOS)
@@ -246,8 +257,8 @@ sha256sum -c checksums.txt
 
 # Verify (Windows)
 certutil -hashfile filename.tar.gz SHA256`}
-          </pre>
-        </Paper>
+          language="bash"
+        />
       </Box>
     </Container>
   );

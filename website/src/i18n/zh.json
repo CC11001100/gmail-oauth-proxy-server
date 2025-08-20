@@ -201,7 +201,71 @@
     "latest": "最新版本",
     "platforms": "可用平台",
     "checksums": "校验和",
-    "sourceCode": "源代码"
+    "sourceCode": "源代码",
+    "installationMethods": "安装方法",
+    "verification": "验证",
+    "verificationDescription": "所有发布版本都包含SHA256校验和用于验证。下载后，请验证下载文件的完整性：",
+    "downloadButton": "下载",
+    "viewOnGitHub": "在GitHub上查看",
+    "allReleases": "所有发布版本",
+    "reportIssues": "报告问题",
+    "sourceCodeDescription": "访问完整的源代码，为项目做出贡献，或报告问题。",
+    "methods": {
+      "prebuilt": {
+        "title": "下载预构建二进制文件",
+        "description": "下载并解压适合您平台的二进制文件",
+        "steps": [
+          "下载适合您平台的二进制文件",
+          "解压压缩包：tar -xzf filename.tar.gz",
+          "设置可执行权限：chmod +x gmail-oauth-proxy",
+          "运行：./gmail-oauth-proxy server"
+        ]
+      },
+      "source": {
+        "title": "从源代码构建",
+        "description": "使用Go从源代码编译",
+        "steps": [
+          "克隆：git clone https://github.com/cc11001100/gmail-oauth-proxy-server.git",
+          "进入目录：cd gmail-oauth-proxy-server",
+          "安装依赖：go mod tidy",
+          "构建：go build -o gmail-oauth-proxy main.go"
+        ]
+      },
+      "go": {
+        "title": "使用Go安装",
+        "description": "直接使用Go工具链安装",
+        "steps": [
+          "运行：go install github.com/cc11001100/gmail-oauth-proxy-server@latest",
+          "二进制文件将在您的$GOPATH/bin目录中可用"
+        ]
+      }
+    },
+    "platforms": {
+      "linuxAmd64": {
+        "name": "Linux AMD64",
+        "description": "适用于大多数Linux发行版（64位）"
+      },
+      "linuxArm64": {
+        "name": "Linux ARM64",
+        "description": "适用于基于ARM的Linux系统（64位）"
+      },
+      "macosIntel": {
+        "name": "macOS Intel",
+        "description": "适用于基于Intel的Mac电脑"
+      },
+      "macosAppleSilicon": {
+        "name": "macOS Apple Silicon",
+        "description": "适用于M1/M2 Mac电脑"
+      },
+      "windowsAmd64": {
+        "name": "Windows AMD64",
+        "description": "适用于Windows（64位）"
+      },
+      "freebsdAmd64": {
+        "name": "FreeBSD AMD64",
+        "description": "适用于FreeBSD系统（64位）"
+      }
+    }
   },
   "footer": {
     "description": "安全的谷歌OAuth代理服务",
@@ -211,7 +275,29 @@
       "releases": "发布版本",
       "issues": "问题反馈"
     },
-    "copyright": "© 2024 Gmail OAuth代理服务器。采用MIT许可证。"
+    "copyright": "© 2024 Gmail OAuth代理服务器。采用MIT许可证。",
+    "quickLinks": "快速链接",
+    "techStack": "技术栈",
+    "features": {
+      "dualAuth": "双重认证",
+      "ipWhitelist": "IP白名单",
+      "httpsEnforcement": "HTTPS强制",
+      "logSanitization": "日志脱敏"
+    },
+    "tech": {
+      "go": {
+        "title": "Go + Gin Framework",
+        "description": "高性能后端服务"
+      },
+      "oauth": {
+        "title": "OAuth 2.0",
+        "description": "安全认证协议"
+      },
+      "license": {
+        "title": "MIT License",
+        "description": "开源免费使用"
+      }
+    }
   },
   "common": {
     "language": "语言",

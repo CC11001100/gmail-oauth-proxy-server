@@ -1,0 +1,170 @@
+# GoReleaser configuration for gmail-oauth-proxy-server
+# Documentation: https://goreleaser.com
+
+# Configuration version
+version: 2
+
+# Project information
+project_name: gmail-oauth-proxy-server
+
+# Environment variables
+env:
+  - GO111MODULE=on
+  - CGO_ENABLED=0
+
+# Before hooks
+before:
+  hooks:
+    # Clean up any previous builds
+    - go clean
+    # Run tests
+    - go test ./...
+    # Generate any necessary files
+    - go mod tidy
+
+# Build configuration
+builds:
+  - id: gmail-oauth-proxy
+    # Binary name
+    binary: gmail-oauth-proxy
+    # Main package path
+    main: ./main.go
+    # Build flags
+    flags:
+      - -trimpath
+    # Linker flags for version information
+    ldflags:
+      - -s -w
+      - -X gmail-oauth-proxy-server/cmd.Version={{.Version}}
+      - -X gmail-oauth-proxy-server/cmd.GitCommit={{.FullCommit}}
+      - -X gmail-oauth-proxy-server/cmd.BuildTime={{.Date}}
+    # Target platforms
+    goos:
+      - linux
+      - windows
+      - darwin
+      - freebsd
+    goarch:
+      - amd64
+      - arm64
+      - arm
+    goarm:
+      - "6"
+      - "7"
+    # Ignore combinations
+    ignore:
+      - goos: windows
+        goarch: arm
+      - goos: windows
+        goarch: arm64
+      - goos: freebsd
+        goarch: arm
+      - goos: freebsd
+        goarch: arm64
+
+# Archive configuration
+archives:
+  - id: default
+    # Archive name template
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    # Files to include in archive
+    files:
+      - README.md
+      - LICENSE
+      - config.yaml
+
+# Checksum configuration
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+  algorithm: sha256
+
+# Snapshot configuration (for development builds)
+snapshot:
+  version_template: "{{ .Version }}-next"
+
+# Changelog configuration
+changelog:
+  sort: asc
+  use: github
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
+      - "^chore:"
+      - "^style:"
+      - "^refactor:"
+      - "^perf:"
+      - "^build:"
+  groups:
+    - title: "🚀 Features"
+      regexp: "^.*feat[(\\w)]*:+.*$"
+      order: 0
+    - title: "🐛 Bug Fixes"
+      regexp: "^.*fix[(\\w)]*:+.*$"
+      order: 1
+    - title: "📚 Documentation"
+      regexp: "^.*docs[(\\w)]*:+.*$"
+      order: 2
+    - title: "🔧 Others"
+      order: 999
+
+# Release configuration
+release:
+  # GitHub repository
+  github:
+    owner: cc11001100
+    name: gmail-oauth-proxy-server
+  # Release name template
+  name_template: "Release {{ .Version }}"
+  # Draft release
+  draft: false
+  # Prerelease
+  prerelease: auto
+  # Release notes
+  header: |
+    ## Gmail OAuth Proxy Server {{ .Version }}
+    
+    Welcome to this new release of Gmail OAuth Proxy Server!
+    
+    ### 📦 Installation
+    
+    #### Using pre-built binaries
+    Download the appropriate binary for your platform from the assets below.
+    
+    #### Using Go install
+    ```bash
+    go install github.com/cc11001100/gmail-oauth-proxy-server@{{ .Tag }}
+    ```
+    
+    ### 🔍 Verification
+    All binaries are signed and checksums are provided for verification.
+    
+  footer: |
+    ---
+    
+    **Full Changelog**: https://github.com/cc11001100/gmail-oauth-proxy-server/compare/{{ .PreviousTag }}...{{ .Tag }}
+    
+    ### 🙏 Thanks
+    Thanks to all contributors who made this release possible!
+
+# Universal binaries for macOS
+universal_binaries:
+  - replace: true
+
+# Metadata
+metadata:
+  mod_timestamp: "{{ .CommitTimestamp }}"
+
+# Git configuration
+git:
+  # Ignore tags that don't match semver
+  ignore_tags:
+    - "nightly"
+    - "latest"
+
+# Announce configuration (optional)
+# announce:
+#   slack:
+#     enabled: true
+#     message_template: "Gmail OAuth Proxy Server {{ .Tag }} is out! Check it out at {{ .ReleaseURL }}"

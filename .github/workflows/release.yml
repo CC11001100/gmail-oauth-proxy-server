@@ -1,0 +1,71 @@
+# GitHub Actions workflow for releasing gmail-oauth-proxy-server
+name: Release
+
+# Trigger on tag push
+on:
+  push:
+    tags:
+      - 'v*'
+
+# Environment variables
+env:
+  GO_VERSION: '1.21'
+
+# Jobs
+jobs:
+  # Release job
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    
+    # Permissions for GitHub token
+    permissions:
+      contents: write
+      packages: write
+      
+    steps:
+      # Checkout code
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      # Setup Go
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          
+      # Cache Go modules
+      - name: Cache Go modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+            
+      # Run tests
+      - name: Run tests
+        run: go test -v ./...
+        
+      # Run GoReleaser
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: '~> v2'
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      # Upload artifacts (optional, for debugging)
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7

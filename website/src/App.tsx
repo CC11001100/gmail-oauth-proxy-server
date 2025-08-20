@@ -61,12 +61,9 @@ function App() {
         return;
       }
       
-      // 如果路径以 /gmail-oauth-proxy-server 开头，需要去掉这个前缀
-      if (currentPath.startsWith('/gmail-oauth-proxy-server')) {
-        const cleanPath = currentPath.replace('/gmail-oauth-proxy-server', '');
-        navigate(cleanPath || '/', { replace: true });
-        return;
-      }
+      // 在自定义域名环境下，不要去掉 /gmail-oauth-proxy-server 前缀
+      // 因为这是用户实际访问的路径，应该保持
+      // 只有在 GitHub Pages 环境下才需要处理这个前缀
     }
     // 开发环境：不需要特殊处理
   }, [location.pathname, navigate]);

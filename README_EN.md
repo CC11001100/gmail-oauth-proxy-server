@@ -1,6 +1,9 @@
 # Gmail OAuth Proxy Server
 
-[English](README.md) | **中文**
+**English** | [中文](README.md)
+
+[![Go Version](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 [![Website](https://img.shields.io/badge/Website-🌐%20Live-blue.svg)](https://cc11001100.github.io/gmail-oauth-proxy-server/)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-🚀%20Modern%20Website-brightgreen.svg)](https://cc11001100.github.io/gmail-oauth-proxy-server/)

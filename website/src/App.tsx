@@ -1,6 +1,7 @@
 
 import { Box, useMediaQuery } from '@mui/material'
 import { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import Home from './pages/Home/Home'
@@ -18,6 +19,8 @@ import './App.css'
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [isDarkMode, setIsDarkMode] = useState(prefersDarkMode);
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -28,6 +31,27 @@ function App() {
     }
   }, [prefersDarkMode]);
 
+  // 处理生产环境下的路径重定向
+  useEffect(() => {
+    const isProduction = window.location.hostname === 'cc11001100.github.io';
+    const currentPath = location.pathname;
+    
+    if (isProduction) {
+      // 在生产环境下，如果访问根路径，重定向到基础路径
+      if (currentPath === '/') {
+        navigate('/gmail-oauth-proxy-server/', { replace: true });
+        return;
+      }
+      
+      // 如果路径不包含基础路径，重定向到正确的基础路径
+      if (!currentPath.startsWith('/gmail-oauth-proxy-server')) {
+        const targetPath = `/gmail-oauth-proxy-server${currentPath}`;
+        navigate(targetPath, { replace: true });
+        return;
+      }
+    }
+  }, [location.pathname, navigate]);
+
   const handleThemeToggle = () => {
     const newTheme = !isDarkMode;
     setIsDarkMode(newTheme);
@@ -36,7 +60,7 @@ function App() {
 
   const currentTheme = isDarkMode ? darkTheme : lightTheme;
 
-  // 路由配置
+  // 路由配置 - 使用相对路径，让basename自动处理
   const routes = [
     { path: '/', element: <Home /> },
     { path: '/documentation', element: <Documentation /> },

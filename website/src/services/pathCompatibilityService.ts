@@ -82,7 +82,11 @@ class PathCompatibilityService {
     
     // 如果访问根路径，智能重定向
     if (currentPath === '/' || currentPath === '') {
-      this.smartRedirect('/');
+      // 避免无限重定向：检查是否已经在正确的路径上
+      const targetPath = toBasePath('/');
+      if (currentPath !== targetPath) {
+        this.smartRedirect('/');
+      }
       return;
     }
 
@@ -93,7 +97,10 @@ class PathCompatibilityService {
 
     // 如果访问的是其他路径，尝试重定向到对应的带base路径
     if (currentPath.startsWith('/') && currentPath !== '/') {
-      this.smartRedirect(currentPath);
+      const targetPath = toBasePath(currentPath);
+      if (currentPath !== targetPath) {
+        this.smartRedirect(currentPath);
+      }
       return;
     }
   }
@@ -116,13 +123,20 @@ class PathCompatibilityService {
 
     // 如果访问根路径，智能重定向
     if (currentPath === '/' || currentPath === '') {
-      this.smartRedirect('/');
+      // 避免无限重定向：检查是否已经在正确的路径上
+      const targetPath = toBasePath('/');
+      if (currentPath !== targetPath) {
+        this.smartRedirect('/');
+      }
       return;
     }
 
     // 如果访问的是其他路径，尝试重定向到对应的带base路径
     if (currentPath.startsWith('/') && currentPath !== '/') {
-      this.smartRedirect(currentPath);
+      const targetPath = toBasePath(currentPath);
+      if (currentPath !== targetPath) {
+        this.smartRedirect(currentPath);
+      }
       return;
     }
   }

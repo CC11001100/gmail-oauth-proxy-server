@@ -10,14 +10,14 @@ interface PathCompatibilityProps {
  * 处理不同路径格式的访问，确保用户体验一致
  */
 const PathCompatibility: React.FC<PathCompatibilityProps> = ({ children }) => {
-  const { needsRedirect, smartRedirect } = usePathCompatibility();
+  const { currentPath, hasBase } = usePathCompatibility();
 
   useEffect(() => {
-    // 如果当前路径需要重定向，进行智能重定向
-    if (needsRedirect()) {
-      smartRedirect('/');
+    // 只在生产环境下进行路径检测，不进行自动重定向
+    if (window.location.hostname === 'cc11001100.github.io') {
+      console.log('路径兼容性：当前路径', { currentPath, hasBase });
     }
-  }, [needsRedirect, smartRedirect]);
+  }, [currentPath, hasBase]);
 
   return <>{children}</>;
 };

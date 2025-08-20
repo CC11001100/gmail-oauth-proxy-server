@@ -5,14 +5,17 @@ import './index.css'
 import './i18n'
 import App from './App.tsx'
 
-// 动态检测当前路径，支持多路径访问
+// 简化基础路径检测，避免复杂的动态逻辑
 const getBasename = () => {
-  const pathname = window.location.pathname;
-  // 如果路径包含基础路径，使用基础路径作为basename
-  if (pathname.startsWith('/gmail-oauth-proxy-server')) {
+  // 检查是否为生产环境（GitHub Pages）
+  const isProduction = window.location.hostname === 'cc11001100.github.io';
+  
+  if (isProduction) {
+    // 生产环境下始终使用基础路径
     return '/gmail-oauth-proxy-server';
   }
-  // 否则使用根路径，这样可以在根域名下正常访问
+  
+  // 开发环境下使用空字符串
   return '';
 };
 

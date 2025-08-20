@@ -5,6 +5,10 @@ export const generateCommands = (config: ServerConfig): GeneratedOutput => {
   // Generate command line
   const commandParts = ['./gmail-oauth-proxy server'];
   
+  if (config.apiKey) {
+    commandParts.push(`--api-key ${config.apiKey}`);
+  }
+  
   if (config.port !== 8080) {
     commandParts.push(`--port ${config.port}`);
   }

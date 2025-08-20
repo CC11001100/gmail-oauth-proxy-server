@@ -35,31 +35,37 @@ const Home: React.FC = () => {
       icon: <SecurityIcon />,
       title: t('home.features.dualAuth.title'),
       description: t('home.features.dualAuth.description'),
+      color: 'primary' as const,
     },
     {
       icon: <ShieldIcon />,
       title: t('home.features.flexibleAuth.title'),
       description: t('home.features.flexibleAuth.description'),
+      color: 'success' as const,
     },
     {
       icon: <HttpsIcon />,
       title: t('home.features.httpsEnforcement.title'),
       description: t('home.features.httpsEnforcement.description'),
+      color: 'info' as const,
     },
     {
       icon: <ListIcon />,
       title: t('home.features.ipWhitelist.title'),
       description: t('home.features.ipWhitelist.description'),
+      color: 'warning' as const,
     },
     {
       icon: <VisibilityIcon />,
       title: t('home.features.logSanitization.title'),
       description: t('home.features.logSanitization.description'),
+      color: 'secondary' as const,
     },
     {
       icon: <SwapHorizIcon />,
       title: t('home.features.requestProxy.title'),
       description: t('home.features.requestProxy.description'),
+      color: 'error' as const,
     },
   ];
 
@@ -130,6 +136,7 @@ const Home: React.FC = () => {
                 icon={feature.icon}
                 title={feature.title}
                 description={feature.description}
+                color={feature.color}
               />
             </Grid>
           ))}

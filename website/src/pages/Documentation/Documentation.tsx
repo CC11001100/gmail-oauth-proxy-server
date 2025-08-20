@@ -29,11 +29,9 @@ import {
   Info as InfoIcon,
   CheckCircle as CheckCircleIcon,
 } from '@mui/icons-material';
-import { useTranslation } from 'react-i18next';
 import styles from './Documentation.module.css';
 
 const Documentation: React.FC = () => {
-  const { t } = useTranslation();
 
   const features = [
     {

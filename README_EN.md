@@ -4,8 +4,8 @@
 
 [![Go Version](https://img.shields.io/badge/Go-1.21+-blue.svg)](https://golang.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Website](https://img.shields.io/badge/Website-🌐%20Live-blue.svg)](https://www.cc11001100.com/)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-🚀%20Modern%20Website-brightgreen.svg)](https://www.cc11001100.com/)
+[![Website](https://img.shields.io/badge/Website-🌐%20Live-blue.svg)](https://cc11001100.github.io/gmail-oauth-proxy-server/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-🚀%20Modern%20Website-brightgreen.svg)](https://cc11001100.github.io/gmail-oauth-proxy-server/)
 
 A Google OAuth proxy service implemented with Go and Gin framework for securely proxying OAuth token exchange requests.
 
@@ -20,7 +20,7 @@ We have created a modern official website for this project, featuring:
 - ⚡ **Fast Loading**: Optimized performance and user experience
 - 🔧 **Online Tools**: Parameter editor and configuration generator
 
-**Visit**: [https://www.cc11001100.com/](https://www.cc11001100.com/)
+**Visit**: [https://cc11001100.github.io/gmail-oauth-proxy-server/](https://cc11001100.github.io/gmail-oauth-proxy-server/)
 
 ### 🚀 Local Website Development
 
@@ -352,4 +352,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Gmail OAuth Proxy Server** - Secure and efficient OAuth proxy service
 
-[🌐 Visit Modern Website](https://www.cc11001100.com/) | [📚 View Documentation](https://www.cc11001100.com/documentation) | [💾 Download Latest](https://www.cc11001100.com/download)
+[🌐 Visit Modern Website](https://cc11001100.github.io/gmail-oauth-proxy-server/) | [📚 View Documentation](https://cc11001100.github.io/gmail-oauth-proxy-server/documentation) | [💾 Download Latest](https://cc11001100.github.io/gmail-oauth-proxy-server/download)

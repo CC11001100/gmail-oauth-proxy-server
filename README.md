@@ -2,8 +2,8 @@
 
 [English](README.md) | **中文**
 
-[![Website](https://img.shields.io/badge/Website-🌐%20Live-blue.svg)](https://cc11001100.github.io/gmail-oauth-proxy-server/)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-🚀%20Modern%20Website-brightgreen.svg)](https://cc11001100.github.io/gmail-oauth-proxy-server/)
+[![Website](https://img.shields.io/badge/Website-🌐%20Live-blue.svg)](https://www.cc11001100.com/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-🚀%20Modern%20Website-brightgreen.svg)](https://www.cc11001100.com/)
 
 ## 🌐 现代化官方网站
 
@@ -16,7 +16,7 @@
 - ⚡ **快速加载**: 优化的性能和用户体验
 - 🔧 **在线工具**: 参数编辑器和配置生成器
 
-**访问地址**: [https://cc11001100.github.io/gmail-oauth-proxy-server/](https://cc11001100.github.io/gmail-oauth-proxy-server/)
+**访问地址**: [https://www.cc11001100.com/](https://www.cc11001100.com/)
 
 ### 🚀 本地开发网站
 
@@ -350,4 +350,4 @@ curl http://localhost:8080/health
 
 **Gmail OAuth Proxy Server** - 安全、高效的 OAuth 代理服务
 
-[🌐 访问现代化官网](https://cc11001100.github.io/gmail-oauth-proxy-server/) | [📚 查看文档](https://cc11001100.github.io/gmail-oauth-proxy-server/documentation) | [💾 下载最新版本](https://cc11001100.github.io/gmail-oauth-proxy-server/download)
+[🌐 访问现代化官网](https://www.cc11001100.com/) | [📚 查看文档](https://www.cc11001100.com/documentation) | [💾 下载最新版本](https://www.cc11001100.com/download)

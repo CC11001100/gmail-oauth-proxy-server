@@ -62,12 +62,18 @@ function App() {
 
   const currentTheme = isDarkMode ? darkTheme : lightTheme;
 
-  // 路由配置 - 使用相对路径，让basename自动处理
+  // 路由配置 - 支持多种路径格式
   const routes = [
     { path: '/', element: <Home /> },
     { path: '/documentation', element: <Documentation /> },
     { path: '/parameter-editor', element: <ParameterEditorPage /> },
-    { path: '/download', element: <Download /> }
+    { path: '/download', element: <Download /> },
+    // 为自定义域名添加带前缀的路径支持
+    { path: '/gmail-oauth-proxy-server', element: <Home /> },
+    { path: '/gmail-oauth-proxy-server/', element: <Home /> },
+    { path: '/gmail-oauth-proxy-server/documentation', element: <Documentation /> },
+    { path: '/gmail-oauth-proxy-server/parameter-editor', element: <ParameterEditorPage /> },
+    { path: '/gmail-oauth-proxy-server/download', element: <Download /> }
   ];
 
   return (

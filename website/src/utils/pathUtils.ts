@@ -26,18 +26,26 @@ export const isProduction = () => {
  */
 export const getDeploymentEnvironment = () => {
   const hostname = window.location.hostname;
+  const pathname = window.location.pathname;
+  
+  // 添加调试信息
+  console.log('🔍 环境检测:', { hostname, pathname });
   
   // 检测部署环境
   const isGitHubPages = hostname === 'cc11001100.github.io';
   const isCustomDomain = hostname === 'www.cc11001100.com' || hostname === 'cc11001100.com';
   
+  let env: string;
   if (isGitHubPages) {
-    return 'github-pages';
+    env = 'github-pages';
   } else if (isCustomDomain) {
-    return 'custom-domain';
+    env = 'custom-domain';
+  } else {
+    env = 'development';
   }
   
-  return 'development';
+  console.log('🔍 检测到的环境:', env);
+  return env;
 };
 
 /**
@@ -45,7 +53,9 @@ export const getDeploymentEnvironment = () => {
  */
 export const needsBasePath = (): boolean => {
   const env = getDeploymentEnvironment();
-  return env === 'github-pages';
+  const result = env === 'github-pages';
+  console.log('🔍 needsBasePath:', { env, result });
+  return result;
 };
 
 /**
@@ -103,13 +113,16 @@ export const smartRedirect = (targetPath: string = '/'): void => {
  * 获取最适合当前环境的路径
  */
 export const getOptimalPath = (path: string): string => {
-  // 根据部署环境决定是否需要基础路径
-  if (needsBasePath()) {
-    return toBasePath(path);
-  }
+  const needsBase = needsBasePath();
+  const result = needsBase ? toBasePath(path) : path;
   
-  // 自定义域名或开发环境，直接使用相对路径
-  return path;
+  console.log('🔍 getOptimalPath:', { 
+    inputPath: path, 
+    needsBasePath: needsBase, 
+    result 
+  });
+  
+  return result;
 };
 
 /**

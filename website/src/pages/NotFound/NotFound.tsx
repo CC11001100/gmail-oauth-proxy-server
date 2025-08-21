@@ -1,6 +1,8 @@
+import React from 'react';
 import { Box, Typography, Button, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Home as HomeIcon, ArrowBack as ArrowBackIcon } from '@mui/icons-material';
+import { getOptimalPath } from '../../utils/pathUtils';
 
 /**
  * 404页面组件
@@ -10,7 +12,7 @@ const NotFound: React.FC = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
-    navigate('/');
+    navigate(getOptimalPath('/'));
   };
 
   const handleGoBack = () => {

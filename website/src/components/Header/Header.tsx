@@ -27,6 +27,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
+import { getOptimalPath, fromBasePath } from '../../utils/pathUtils';
 import styles from './Header.module.css';
 
 interface HeaderProps {
@@ -46,10 +47,10 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode = false, onThemeToggle }) =>
   };
 
   const navItems = [
-    { key: 'home', label: t('nav.home'), path: '/' },
-    { key: 'documentation', label: t('nav.documentation'), path: '/documentation' },
-    { key: 'parameterEditor', label: t('nav.parameterEditor'), path: '/parameter-editor' },
-    { key: 'download', label: t('nav.download'), path: '/download' },
+    { key: 'home', label: t('nav.home'), path: getOptimalPath('/') },
+    { key: 'documentation', label: t('nav.documentation'), path: getOptimalPath('/documentation') },
+    { key: 'parameterEditor', label: t('nav.parameterEditor'), path: getOptimalPath('/parameter-editor') },
+    { key: 'download', label: t('nav.download'), path: getOptimalPath('/download') },
   ];
 
   const drawer = (
@@ -68,7 +69,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode = false, onThemeToggle }) =>
             <ListItemButton
               component={Link}
               to={item.path}
-              selected={location.pathname === item.path}
+              selected={location.pathname === item.path || location.pathname === fromBasePath(item.path)}
               sx={{ textAlign: 'center' }}
             >
               <ListItemText primary={item.label} />
@@ -105,7 +106,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode = false, onThemeToggle }) =>
               <Typography
                 variant="h6"
                 component={Link}
-                to="/"
+                to={getOptimalPath('/')}
                 sx={{
                   textDecoration: 'none',
                   color: 'inherit',
@@ -147,7 +148,7 @@ const Header: React.FC<HeaderProps> = ({ isDarkMode = false, onThemeToggle }) =>
                     component={Link}
                     to={item.path}
                     color="inherit"
-                    className={location.pathname === item.path ? styles.activeNavItem : ''}
+                    className={location.pathname === item.path || location.pathname === fromBasePath(item.path) ? styles.activeNavItem : ''}
                     sx={{
                       fontWeight: 500,
                       fontSize: '1rem',

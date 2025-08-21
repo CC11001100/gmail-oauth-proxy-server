@@ -26,6 +26,7 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { getOptimalPath } from '../../utils/pathUtils';
 import FeatureCard from '../../components/FeatureCard/FeatureCard';
 import styles from './Home.module.css';
 
@@ -105,7 +106,7 @@ const Home: React.FC = () => {
                 variant="contained"
                 size="large"
                 component={Link}
-                to="/parameter-editor"
+                to={getOptimalPath('/parameter-editor')}
                 startIcon={<PlayArrowIcon />}
                 className={styles.primaryButton}
               >
@@ -115,7 +116,7 @@ const Home: React.FC = () => {
                 variant="outlined"
                 size="large"
                 component={Link}
-                to="/documentation"
+                to={getOptimalPath('/documentation')}
                 startIcon={<DownloadIcon />}
                 className={styles.secondaryButton}
               >
@@ -192,7 +193,7 @@ const Home: React.FC = () => {
               variant="contained"
               size="large"
               component={Link}
-              to="/download"
+              to={getOptimalPath('/download')}
               startIcon={<DownloadIcon />}
             >
               {t('nav.download')}
@@ -201,7 +202,7 @@ const Home: React.FC = () => {
               variant="outlined"
               size="large"
               component={Link}
-              to="/parameter-editor"
+              to={getOptimalPath('/parameter-editor')}
             >
               {t('nav.parameterEditor')}
             </Button>

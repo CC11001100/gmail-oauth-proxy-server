@@ -11,14 +11,41 @@ export const ROOT_PATH = '/';
  * 检测当前环境是否为开发环境
  */
 export const isDevelopment = () => {
-  return import.meta.env.DEV;
+  return (import.meta as any).env.DEV;
 };
 
 /**
  * 检测当前环境是否为生产环境
  */
 export const isProduction = () => {
-  return import.meta.env.PROD;
+  return (import.meta as any).env.PROD;
+};
+
+/**
+ * 检测当前部署环境
+ */
+export const getDeploymentEnvironment = () => {
+  const hostname = window.location.hostname;
+  
+  // 检测部署环境
+  const isGitHubPages = hostname === 'cc11001100.github.io';
+  const isCustomDomain = hostname === 'www.cc11001100.com' || hostname === 'cc11001100.com';
+  
+  if (isGitHubPages) {
+    return 'github-pages';
+  } else if (isCustomDomain) {
+    return 'custom-domain';
+  }
+  
+  return 'development';
+};
+
+/**
+ * 检测当前环境是否需要基础路径
+ */
+export const needsBasePath = (): boolean => {
+  const env = getDeploymentEnvironment();
+  return env === 'github-pages';
 };
 
 /**
@@ -76,12 +103,12 @@ export const smartRedirect = (targetPath: string = '/'): void => {
  * 获取最适合当前环境的路径
  */
 export const getOptimalPath = (path: string): string => {
-  const currentPath = getCurrentPath();
-  
-  if (hasBasePath(currentPath)) {
+  // 根据部署环境决定是否需要基础路径
+  if (needsBasePath()) {
     return toBasePath(path);
   }
   
+  // 自定义域名或开发环境，直接使用相对路径
   return path;
 };
 
@@ -99,7 +126,7 @@ export const needsRedirect = (): boolean => {
   
   // 生产环境下，如果访问根路径且配置了基础路径，则需要重定向
   if (currentPath === '/' || currentPath === '') {
-    return true;
+    return needsBasePath();
   }
   
   return false;

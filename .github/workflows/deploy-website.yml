@@ -50,9 +50,9 @@ jobs:
         run: npm ci
         working-directory: ./website
         
-      # Build the website
+      # Build the website with correct base path for GitHub Pages
       - name: Build website
-        run: npm run build
+        run: npm run build:github-pages
         working-directory: ./website
         
       # Setup Pages

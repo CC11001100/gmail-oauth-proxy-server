@@ -1,62 +1,7 @@
 /**
  * 路径处理工具
- * 用于智能处理不同路径格式，确保路径兼容性
+ * 根据部署环境动态处理路径前缀
  */
-
-// 基础路径配置
-export const BASE_PATH = '/gmail-oauth-proxy-server';
-export const ROOT_PATH = '/';
-
-/**
- * 检测当前环境是否为开发环境
- */
-export const isDevelopment = () => {
-  return (import.meta as any).env.DEV;
-};
-
-/**
- * 检测当前环境是否为生产环境
- */
-export const isProduction = () => {
-  return (import.meta as any).env.PROD;
-};
-
-/**
- * 检测当前部署环境
- */
-export const getDeploymentEnvironment = () => {
-  const hostname = window.location.hostname;
-  const pathname = window.location.pathname;
-  
-  // 添加调试信息
-  console.log('🔍 环境检测:', { hostname, pathname });
-  
-  // 检测部署环境
-  const isGitHubPages = hostname === 'cc11001100.github.io';
-  const isCustomDomain = hostname === 'www.cc11001100.com' || hostname === 'cc11001100.com';
-  
-  let env: string;
-  if (isGitHubPages) {
-    env = 'github-pages';
-  } else if (isCustomDomain) {
-    env = 'custom-domain';
-  } else {
-    env = 'development';
-  }
-  
-  console.log('🔍 检测到的环境:', env);
-  return env;
-};
-
-/**
- * 检测当前环境是否需要基础路径
- */
-export const needsBasePath = (): boolean => {
-  const env = getDeploymentEnvironment();
-  const result = env === 'github-pages';
-  console.log('🔍 needsBasePath:', { env, result });
-  return result;
-};
 
 /**
  * 获取当前页面的完整路径
@@ -66,81 +11,64 @@ export const getCurrentPath = (): string => {
 };
 
 /**
- * 检测当前路径是否包含基础路径
+ * 获取部署环境的基础路径
  */
-export const hasBasePath = (path: string = getCurrentPath()): boolean => {
-  return path.startsWith(BASE_PATH);
-};
-
-/**
- * 将相对路径转换为包含基础路径的完整路径
- */
-export const toBasePath = (path: string): string => {
-  if (path.startsWith('/')) {
-    return `${BASE_PATH}${path}`;
+export const getBasePath = (): string => {
+  const hostname = window.location.hostname;
+  const pathname = window.location.pathname;
+  
+  // GitHub Pages环境
+  if (hostname === 'cc11001100.github.io') {
+    return '/gmail-oauth-proxy-server';
   }
-  return `${BASE_PATH}/${path}`;
+  
+  // 自定义域名环境
+  if (hostname === 'www.cc11001100.com' || hostname === 'cc11001100.com') {
+    if (pathname.startsWith('/gmail-oauth-proxy-server')) {
+      return '/gmail-oauth-proxy-server';
+    }
+    return '';
+  }
+  
+  // 开发环境
+  return '';
 };
 
 /**
- * 将包含基础路径的路径转换为相对路径
+ * 从完整路径中移除base路径前缀
  */
 export const fromBasePath = (path: string): string => {
-  if (path.startsWith(BASE_PATH)) {
-    return path.substring(BASE_PATH.length) || '/';
+  const basePath = getBasePath();
+  if (basePath && path.startsWith(basePath)) {
+    return path.substring(basePath.length) || '/';
   }
   return path;
 };
 
 /**
- * 智能路径重定向
- * 根据当前路径自动选择最合适的路径格式
- */
-export const smartRedirect = (targetPath: string = '/'): void => {
-  const currentPath = getCurrentPath();
-  
-  // 如果当前路径已经包含基础路径，则使用基础路径格式
-  if (hasBasePath(currentPath)) {
-    const fullPath = toBasePath(targetPath);
-    window.history.replaceState(null, '', fullPath);
-  } else {
-    // 否则使用根路径格式
-    window.history.replaceState(null, '', targetPath);
-  }
-};
-
-/**
- * 获取最适合当前环境的路径
+ * 为给定路径添加合适的base路径前缀
  */
 export const getOptimalPath = (path: string): string => {
-  const needsBase = needsBasePath();
-  const result = needsBase ? toBasePath(path) : path;
+  const basePath = getBasePath();
   
-  console.log('🔍 getOptimalPath:', { 
-    inputPath: path, 
-    needsBasePath: needsBase, 
-    result 
-  });
+  // 如果路径已经包含基础路径，直接返回
+  if (basePath && path.startsWith(basePath)) {
+    return path;
+  }
   
-  return result;
+  // 添加基础路径前缀
+  if (basePath) {
+    // 确保路径以 / 开头
+    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+    return `${basePath}${normalizedPath}`;
+  }
+  
+  return path;
 };
 
 /**
- * 路径兼容性检查
- * 检查当前路径是否需要重定向
+ * 检查是否需要重定向（暂时不需要）
  */
 export const needsRedirect = (): boolean => {
-  const currentPath = getCurrentPath();
-  
-  // 开发环境下不需要重定向
-  if (isDevelopment()) {
-    return false;
-  }
-  
-  // 生产环境下，如果访问根路径且配置了基础路径，则需要重定向
-  if (currentPath === '/' || currentPath === '') {
-    return needsBasePath();
-  }
-  
   return false;
 }; 

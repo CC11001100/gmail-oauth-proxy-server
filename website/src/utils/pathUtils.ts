@@ -1,6 +1,6 @@
 /**
  * 路径处理工具
- * 根据部署环境动态处理路径前缀
+ * 简化版本 - 由Vite的base配置统一处理路径前缀
  */
 
 /**
@@ -12,27 +12,22 @@ export const getCurrentPath = (): string => {
 
 /**
  * 获取部署环境的基础路径
+ * 注意：现在由Vite的base配置统一处理，这里主要用于调试
  */
 export const getBasePath = (): string => {
   const hostname = window.location.hostname;
   
-  // GitHub Pages环境
-  if (hostname === 'cc11001100.github.io') {
-    return '/gmail-oauth-proxy-server';
-  }
-  
-  // 自定义域名环境 - 当前网站部署在子路径下
-  if (hostname === 'www.cc11001100.com' || hostname === 'cc11001100.com') {
-    // 这个项目总是部署在 /gmail-oauth-proxy-server/ 路径下
-    return '/gmail-oauth-proxy-server';
-  }
-  
   // 开发环境
-  return '';
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return '';
+  }
+  
+  // 生产环境 - 由Vite配置处理
+  return '/gmail-oauth-proxy-server';
 };
 
 /**
- * 从完整路径中移除base路径前缀
+ * 从完整路径中移除base路径前缀（用于调试）
  */
 export const fromBasePath = (path: string): string => {
   const basePath = getBasePath();
@@ -43,25 +38,11 @@ export const fromBasePath = (path: string): string => {
 };
 
 /**
- * 为给定路径添加合适的base路径前缀
+ * 简化路径处理 - 不再需要手动添加base路径
  */
 export const getOptimalPath = (path: string): string => {
-  const basePath = getBasePath();
-  
-  // 如果没有基础路径，直接返回原路径
-  if (!basePath) {
-    return path;
-  }
-  
-  // 如果路径已经包含基础路径，直接返回
-  if (path.startsWith(basePath)) {
-    return path;
-  }
-  
-  // 添加基础路径前缀
-  // 确保路径以 / 开头
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  return `${basePath}${normalizedPath}`;
+  // 现在由Vite和Router统一处理，直接返回原路径
+  return path;
 };
 
 /**

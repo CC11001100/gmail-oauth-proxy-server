@@ -1,150 +1,386 @@
 .documentation {
   padding: 40px 0 80px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.header {
+/* Hero Section Styles */
+.heroSection {
   text-align: center;
   margin-bottom: 48px;
+  padding: 60px 0;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  border-radius: 16px;
+  margin-bottom: 60px;
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.heroTitle {
+  font-weight: 700;
+  background: linear-gradient(45deg, #1976d2, #42a5f5);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 24px;
+}
+
+.heroSubtitle {
+  color: #666;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.heroDescription {
+  color: #777;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 /* Feature Cards */
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
 .featureCard {
   height: 100%;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 12px;
   border: 1px solid #e0e0e0;
+  background: #fff;
+  overflow: hidden;
 }
 
 .featureCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  border-color: #1976d2;
 }
 
 .featureContent {
   text-align: center;
-  padding: 24px 16px;
+  padding: 32px 24px;
 }
 
 .featureIcon {
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 50%;
 }
 
 .featureIcon svg {
-  font-size: 2.5rem;
+  font-size: 2rem;
 }
 
+.featureTitle {
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+}
+
+.featureDescription {
+  color: #666;
+  line-height: 1.5;
+}
+
+/* Accordion Styles */
+.accordionSection {
+  margin-bottom: 16px;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+}
+
+.accordionSummary {
+  background-color: #f8f9fa;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.accordionTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.accordionContent {
+  padding: 32px 24px;
+  background-color: #fff;
+}
+
+/* API Endpoint Styles */
 .endpointCard {
   padding: 24px;
-  margin-bottom: 16px;
-  border-radius: 2px;
+  margin-bottom: 32px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  background: #fff;
 }
 
 .endpointHeader {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.endpointMethod {
+  font-weight: 600;
+  min-width: 80px;
+  text-align: center;
 }
 
 .endpointPath {
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: 'Roboto Mono', 'Monaco', 'Menlo', monospace;
   font-weight: 600;
+  color: #1a1a1a;
+}
+
+.endpointDescription {
+  color: #666;
+  margin-bottom: 24px;
+  line-height: 1.6;
 }
 
 .endpointSection {
-  margin-top: 16px;
+  margin-bottom: 24px;
 }
 
+.sectionTitle {
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+}
+
+/* Code and Text Styles */
 .codeText {
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-family: 'Roboto Mono', 'Monaco', 'Menlo', monospace;
   background-color: #f5f5f5;
   padding: 2px 6px;
-  border-radius: 0;
-  font-size: 0.875rem;
+  border-radius: 4px;
+  font-size: 0.9em;
 }
 
 .codeBlock {
-  background-color: #f5f5f5;
+  background-color: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
   padding: 16px;
-  border-radius: 2px;
-  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-family: 'Roboto Mono', 'Monaco', 'Menlo', monospace;
+  font-size: 0.9em;
+  line-height: 1.4;
   overflow-x: auto;
-  margin: 12px 0;
+}
+
+/* Table Styles */
+.tableContainer {
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.tableHeader {
+  background-color: #f8f9fa;
+}
+
+.tableCell {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tableCellCode {
+  font-family: 'Roboto Mono', 'Monaco', 'Menlo', monospace;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+/* Alert Styles */
+.alert {
+  margin-bottom: 16px;
+  border-radius: 8px;
+  padding: 16px 20px;
+}
+
+.alertTitle {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+/* Authentication Method Styles */
+.authMethod {
+  margin-bottom: 32px;
+  padding: 24px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
   border: 1px solid #e0e0e0;
 }
 
-.alert {
+.authMethodTitle {
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+}
+
+.authMethodDescription {
+  color: #666;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+/* Example Styles */
+.example {
+  margin-bottom: 32px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #1976d2;
+}
+
+.exampleTitle {
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+}
+
+/* Security Best Practices */
+.securityGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
   margin-top: 24px;
 }
 
-.authMethod {
-  margin-bottom: 32px;
+.securityCard {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 24px;
+  background: #fff;
+  height: 100%;
 }
 
-.authMethod ul {
-  margin: 8px 0;
-  padding-left: 24px;
+.securityCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
-.authMethod li {
-  margin-bottom: 8px;
+.securityCardTitle {
+  font-weight: 600;
+  color: #1a1a1a;
 }
 
-.example {
-  margin-bottom: 32px;
+.securityCardDescription {
+  color: #666;
+  line-height: 1.6;
 }
 
-/* Enhanced typography for better readability */
-.endpointCard h6 {
-  color: #1976d2;
-  margin-bottom: 8px;
+/* Error Handling Styles */
+.errorTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
 }
 
-.endpointSection h6 {
-  color: #424242;
+.errorTableHeader {
+  background-color: #f8f9fa;
   font-weight: 600;
 }
 
-/* Table enhancements */
-.endpointCard .MuiTableContainer-root {
-  margin-top: 12px;
+.errorTableCell {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+  vertical-align: top;
 }
 
-.endpointCard .MuiTableCell-root {
-  padding: 8px 12px;
+.errorCode {
+  font-family: 'Roboto Mono', 'Monaco', 'Menlo', monospace;
+  font-weight: 600;
+  background-color: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
-@media (prefers-color-scheme: dark) {
-  .codeText {
-    background-color: #2d2d2d;
-    color: #f5f5f5;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .documentation {
+    padding: 20px 0 40px;
   }
   
-  .codeBlock {
-    background-color: #2d2d2d;
-    color: #f5f5f5;
-    border-color: #444;
+  .heroSection {
+    padding: 40px 20px;
+    margin-bottom: 40px;
   }
-
-  .featureCard {
-    border-color: #444;
-    background-color: #1e1e1e;
+  
+  .featureGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
-
-  .endpointCard h6 {
-    color: #90caf9;
+  
+  .endpointHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
+  
+  .accordionContent {
+    padding: 20px 16px;
+  }
+  
+  .securityGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
 
-  .endpointSection h6 {
-    color: #e0e0e0;
+/* Animation and Transitions */
+.fadeIn {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Focus and Accessibility */
+.focusable:focus {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .documentation {
+    padding: 0;
+  }
+  
+  .featureCard,
+  .endpointCard,
+  .authMethod,
+  .example {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  .accordionSection {
+    break-inside: avoid;
   }
 }

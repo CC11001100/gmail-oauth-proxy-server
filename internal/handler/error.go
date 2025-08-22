@@ -7,11 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// ErrorResponse 错误响应结构
+// ErrorResponse 错误响应结构（遵循Google OAuth 2.0和RFC 6749标准）
 type ErrorResponse struct {
-	Error   string `json:"error"`
-	Details string `json:"details,omitempty"`
-	Code    string `json:"code,omitempty"`
+	Error            string `json:"error"`
+	ErrorDescription string `json:"error_description,omitempty"`
+	ErrorURI         string `json:"error_uri,omitempty"`
 }
 
 // ErrorHandler 全局错误处理中间件
@@ -20,8 +20,9 @@ func ErrorHandler() gin.HandlerFunc {
 		if err, ok := recovered.(string); ok {
 			logger.Error("Panic recovered: %s", err)
 			c.JSON(http.StatusInternalServerError, ErrorResponse{
-				Error: "Internal server error",
-				Code:  "INTERNAL_ERROR",
+				Error:            "server_error",
+				ErrorDescription: "Internal server error",
+				ErrorURI:         "https://tools.ietf.org/html/rfc6749#section-5.2",
 			})
 		}
 		c.Abort()
@@ -32,9 +33,9 @@ func ErrorHandler() gin.HandlerFunc {
 func HandleValidationError(c *gin.Context, err error) {
 	logger.Warn("Validation error: %v", err)
 	c.JSON(http.StatusBadRequest, ErrorResponse{
-		Error:   "Validation failed",
-		Details: err.Error(),
-		Code:    "VALIDATION_ERROR",
+		Error:            "invalid_request",
+		ErrorDescription: err.Error(),
+		ErrorURI:         "https://tools.ietf.org/html/rfc6749#section-4.1.2.1",
 	})
 }
 
@@ -42,8 +43,9 @@ func HandleValidationError(c *gin.Context, err error) {
 func HandleAuthError(c *gin.Context, message string) {
 	logger.Warn("Authentication error: %s", message)
 	c.JSON(http.StatusUnauthorized, ErrorResponse{
-		Error: message,
-		Code:  "AUTH_ERROR",
+		Error:            "unauthorized_client",
+		ErrorDescription: message,
+		ErrorURI:         "https://tools.ietf.org/html/rfc6749#section-4.1.2.1",
 	})
 }
 
@@ -51,8 +53,9 @@ func HandleAuthError(c *gin.Context, message string) {
 func HandleProxyError(c *gin.Context, err error) {
 	logger.Error("Proxy error: %v", err)
 	c.JSON(http.StatusBadGateway, ErrorResponse{
-		Error: "Failed to communicate with OAuth provider",
-		Code:  "PROXY_ERROR",
+		Error:            "temporarily_unavailable",
+		ErrorDescription: "Failed to communicate with OAuth provider",
+		ErrorURI:         "https://tools.ietf.org/html/rfc6749#section-4.1.2.1",
 	})
 }
 
@@ -60,7 +63,18 @@ func HandleProxyError(c *gin.Context, err error) {
 func HandleInternalError(c *gin.Context, err error) {
 	logger.Error("Internal error: %v", err)
 	c.JSON(http.StatusInternalServerError, ErrorResponse{
-		Error: "Internal server error",
-		Code:  "INTERNAL_ERROR",
+		Error:            "server_error",
+		ErrorDescription: "Internal server error",
+		ErrorURI:         "https://tools.ietf.org/html/rfc6749#section-5.2",
+	})
+}
+
+// HandleAuthorizationError 处理授权头错误
+func HandleAuthorizationError(c *gin.Context, err error) {
+	logger.Warn("Authorization error: %v", err)
+	c.JSON(http.StatusUnauthorized, ErrorResponse{
+		Error:            "invalid_token",
+		ErrorDescription: err.Error(),
+		ErrorURI:         "https://tools.ietf.org/html/rfc6750#section-3.1",
 	})
 }

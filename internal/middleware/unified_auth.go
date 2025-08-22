@@ -26,8 +26,9 @@ func UnifiedAuth(config AuthConfig) gin.HandlerFunc {
 		if !hasAPIKey && !hasIPWhitelist {
 			logger.Warn("No authentication method configured")
 			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": "Authentication not configured",
-				"code":  "AUTH_NOT_CONFIGURED",
+				"error":             "server_error",
+				"error_description": "Authentication not configured",
+				"error_uri":         "https://tools.ietf.org/html/rfc6749#section-5.2",
 			})
 			c.Abort()
 			return
@@ -107,13 +108,19 @@ func UnifiedAuth(config AuthConfig) gin.HandlerFunc {
 		if !authPassed {
 			logger.Warn("Authentication failed for %s: %s", clientIP, errorMsg)
 			statusCode := http.StatusUnauthorized
+			errorType := "unauthorized_client"
+			errorURI := "https://tools.ietf.org/html/rfc6749#section-4.1.2.1"
+			
 			if errorCode == "AUTH_IP_NOT_ALLOWED" || errorCode == "AUTH_IP_FAILED" {
 				statusCode = http.StatusForbidden
+				errorType = "access_denied"
+				errorURI = "https://tools.ietf.org/html/rfc6749#section-4.1.2.1"
 			}
 
 			c.JSON(statusCode, gin.H{
-				"error": errorMsg,
-				"code":  errorCode,
+				"error":             errorType,
+				"error_description": errorMsg,
+				"error_uri":         errorURI,
 			})
 			c.Abort()
 			return

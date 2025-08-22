@@ -38,7 +38,10 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 		// 添加请求日志中间件
 		api.Use(middleware.RequestLogger())
 
-		// OAuth token端点
-		api.POST("/token", oauthHandler.TokenHandler)
+		// OAuth API代理端点
+		api.GET("/auth", oauthHandler.AuthHandler)           // 用户授权端点代理
+		api.POST("/token", oauthHandler.TokenHandler)        // 令牌获取端点代理（支持刷新令牌）
+		api.GET("/userinfo", oauthHandler.UserInfoHandler)   // 用户信息获取端点代理
+		api.GET("/tokeninfo", oauthHandler.TokenInfoHandler) // 令牌验证端点代理
 	}
 }

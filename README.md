@@ -51,15 +51,57 @@ npm run build
 
 ## API规范
 
-### POST /token
+### GET /auth
 
-OAuth token交换端点
+用户授权端点代理 - 代理 `https://accounts.google.com/o/oauth2/v2/auth`
 
 **请求头:**
-- `Content-Type: application/json`
 - `X-API-Key: <your_api_key>` (必需)
 
-**请求体:**
+**查询参数:**
+- `client_id`: Google应用的客户端ID (必需)
+- `redirect_uri`: 授权回调地址 (必需)
+- `scope`: 请求的权限范围 (必需, 如: "openid email profile")
+- `state`: 状态参数，防CSRF攻击 (必需)
+- `response_type`: 固定值 "code" (必需)
+- `access_type`: 访问类型 (可选, 如: "offline")
+- `prompt`: 强制显示授权页面 (可选, 如: "consent")
+
+**响应:**
+- 成功: HTTP 302 重定向到Google授权页面
+
+**示例:**
+```bash
+curl -H "X-API-Key: your_api_key" \
+  "https://your-proxy-server.com/auth?client_id=your_client_id&redirect_uri=https://your-app.com/callback&scope=openid%20email%20profile&state=random_state&response_type=code&access_type=offline&prompt=consent"
+```
+
+### POST /token
+
+OAuth token交换端点 - 代理 `https://oauth2.googleapis.com/token` (支持授权码交换和刷新令牌)
+
+**请求头:**
+- `Content-Type: application/x-www-form-urlencoded` (推荐，Google标准格式)
+- `Content-Type: application/json` (向后兼容)
+- `X-API-Key: <your_api_key>` (必需)
+
+**授权码交换请求体 (form-urlencoded格式，与Google API完全一致):**
+```bash
+curl -X POST "https://your-proxy-server.com/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -H "X-API-Key: your_api_key" \
+  -d "code=4/0AeaYshBpVe...&client_id=your-client-id.apps.googleusercontent.com&client_secret=YOUR_CLIENT_SECRET&redirect_uri=https://yourdomain.com/auth/callback&grant_type=authorization_code"
+```
+
+**刷新令牌请求体 (form-urlencoded格式):**
+```bash
+curl -X POST "https://your-proxy-server.com/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -H "X-API-Key: your_api_key" \
+  -d "refresh_token=1//04...&client_id=your-client-id.apps.googleusercontent.com&client_secret=YOUR_CLIENT_SECRET&grant_type=refresh_token"
+```
+
+**JSON格式请求体 (向后兼容):**
 ```json
 {
   "code": "4/0AeaYshBpVe...",
@@ -73,6 +115,45 @@ OAuth token交换端点
 **响应:**
 - 成功: HTTP 200 + Google原始响应
 - 失败: 返回相应错误状态码和消息
+
+### GET /userinfo
+
+用户信息获取端点代理 - 代理 `https://www.googleapis.com/oauth2/v2/userinfo`
+
+**请求头:**
+- `Authorization: Bearer <access_token>` (必需)
+- `X-API-Key: <your_api_key>` (必需)
+
+**响应:**
+- 成功: HTTP 200 + Google原始用户信息响应
+- 失败: 返回相应错误状态码和消息
+
+**示例:**
+```bash
+curl -H "Authorization: Bearer ya29.a0AfH6SMC..." \
+  -H "X-API-Key: your_api_key" \
+  "https://your-proxy-server.com/userinfo"
+```
+
+### GET /tokeninfo
+
+令牌验证端点代理 - 代理 `https://www.googleapis.com/oauth2/v1/tokeninfo`
+
+**请求头:**
+- `X-API-Key: <your_api_key>` (必需)
+
+**查询参数:**
+- `access_token`: 需要验证的访问令牌 (必需)
+
+**响应:**
+- 成功: HTTP 200 + Google原始令牌信息响应
+- 失败: 返回相应错误状态码和消息
+
+**示例:**
+```bash
+curl -H "X-API-Key: your_api_key" \
+  "https://your-proxy-server.com/tokeninfo?access_token=ya29.a0AfH6SMC..."
+```
 
 ## 配置
 

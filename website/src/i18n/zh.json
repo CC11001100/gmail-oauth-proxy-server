@@ -102,6 +102,19 @@
         "method": "GET",
         "path": "/health",
         "description": "用于监控和负载均衡器的健康检查端点"
+      },
+      "queryParameters": "查询参数：",
+      "auth": {
+        "description": "重定向到Google OAuth授权页面以启动OAuth流程"
+      },
+      "refreshToken": {
+        "description": "使用刷新令牌刷新访问令牌"
+      },
+      "userinfo": {
+        "description": "代理请求到Google用户信息API以获取用户信息"
+      },
+      "tokeninfo": {
+        "description": "代理请求到Google令牌验证API以验证访问令牌"
       }
     },
     "authentication": {

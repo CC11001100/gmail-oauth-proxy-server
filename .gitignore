@@ -232,3 +232,7 @@ tokens/
 *.zip
 *.rar
 *.7z
+
+
+# Deployment scripts
+deploy-private-vps.sh

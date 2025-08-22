@@ -102,6 +102,19 @@
         "method": "GET",
         "path": "/health",
         "description": "Health check endpoint for monitoring and load balancers"
+      },
+      "queryParameters": "Query Parameters:",
+      "auth": {
+        "description": "Redirects to Google OAuth authorization page to initiate the OAuth flow"
+      },
+      "refreshToken": {
+        "description": "Refreshes an access token using a refresh token"
+      },
+      "userinfo": {
+        "description": "Proxies request to Google UserInfo API to get user information"
+      },
+      "tokeninfo": {
+        "description": "Proxies request to Google TokenInfo API to validate an access token"
       }
     },
     "authentication": {

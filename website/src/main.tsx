@@ -5,7 +5,7 @@ import './index.css'
 import './i18n'
 import App from './App.tsx'
 
-// 简化basename逻辑 - 只在开发环境需要设置
+// 修复basename逻辑 - 需要在生产环境正确设置basename
 const getBasename = () => {
   const hostname = window.location.hostname;
   
@@ -14,9 +14,9 @@ const getBasename = () => {
     return '';
   }
   
-  // 生产环境：由于Vite的base配置已经处理了静态资源路径，
-  // 这里不需要再设置basename，避免双重路径
-  return '';
+  // 生产环境：需要设置basename来处理路由
+  // 注意：这里的basename是给React Router用的，不会与Vite的base冲突
+  return '/gmail-oauth-proxy-server';
 };
 
 createRoot(document.getElementById('root')!).render(

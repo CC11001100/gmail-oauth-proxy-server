@@ -1,0 +1,18 @@
+# Gmail OAuth Proxy Server Configuration - 禁用认证版本
+
+# 服务器端口
+port: "8080"
+
+# 运行环境 (development/production)
+environment: "development"
+
+# 日志级别 (debug/info/warn/error)
+log_level: "info"
+
+# 请求超时时间（秒）
+timeout: 10
+
+# 禁用认证（仅在开发/测试环境使用）
+disable_auth: true
+
+# 注意：当disable_auth为true时，无需配置api_key和ip_whitelist

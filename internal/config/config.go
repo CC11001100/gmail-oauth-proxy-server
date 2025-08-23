@@ -15,6 +15,7 @@ type Config struct {
 	LogLevel    string   `mapstructure:"log_level"`
 	Timeout     int      `mapstructure:"timeout"`
 	IPWhitelist []string `mapstructure:"ip_whitelist"`
+	DisableAuth bool     `mapstructure:"disable_auth"`
 }
 
 // Load 加载配置
@@ -34,11 +35,14 @@ func LoadWithAutoGenerate(autoGenerate bool) (*Config, error) {
 
 // loadConfig 内部配置加载函数
 func loadConfig(autoGenerate bool, validate bool) (*Config, error) {
-	// 设置配置文件名和路径
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath(".")
-	viper.AddConfigPath("./config")
+	// 不重复设置配置文件路径，使用root.go中已经设置的配置
+	// 只有在没有设置配置文件时才设置默认值
+	if !viper.IsSet("config") && viper.ConfigFileUsed() == "" {
+		viper.SetConfigName("config")
+		viper.SetConfigType("yaml")
+		viper.AddConfigPath(".")
+		viper.AddConfigPath("./config")
+	}
 
 	// 设置环境变量前缀
 	viper.SetEnvPrefix("OAUTH_PROXY")
@@ -49,6 +53,7 @@ func loadConfig(autoGenerate bool, validate bool) (*Config, error) {
 	viper.SetDefault("environment", "development")
 	viper.SetDefault("log_level", "info")
 	viper.SetDefault("timeout", 10)
+	viper.SetDefault("disable_auth", false)
 
 	// 从环境变量读取API Key
 	if apiKey := os.Getenv("OAUTH_PROXY_API_KEY"); apiKey != "" {
@@ -60,12 +65,7 @@ func loadConfig(autoGenerate bool, validate bool) (*Config, error) {
 		viper.Set("ip_whitelist", ipWhitelist)
 	}
 
-	// 读取配置文件（可选）
-	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
-			return nil, err
-		}
-	}
+	// 配置文件已经在root.go中读取，这里不需要重复读取
 
 	var config Config
 	if err := viper.Unmarshal(&config); err != nil {
@@ -96,7 +96,7 @@ func loadConfig(autoGenerate bool, validate bool) (*Config, error) {
 	}
 
 	// 只有在需要验证时才进行鉴权配置验证
-	if validate && config.APIKey == "" && len(config.IPWhitelist) == 0 {
+	if validate && !config.DisableAuth && config.APIKey == "" && len(config.IPWhitelist) == 0 {
 		return nil, fmt.Errorf("at least one authentication method is required: API key or IP whitelist")
 	}
 

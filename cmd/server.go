@@ -70,10 +70,11 @@ func runServer(cmd *cobra.Command, args []string) {
 	// 显示启动信息
 	color.Cyan("🔧 正在初始化Gmail OAuth代理服务器...")
 
-	// 检查是否需要自动生成API Key
+	// 检查是否需要自动生成API Key（仅在未禁用认证时）
 	autoGenerate := !cmd.Flags().Changed("api-key") &&
 		os.Getenv("OAUTH_PROXY_API_KEY") == "" &&
-		!viper.IsSet("api_key")
+		!viper.IsSet("api_key") &&
+		!viper.GetBool("disable_auth")
 
 	// 初始化配置，支持自动生成API Key
 	cfg, err := config.LoadWithAutoGenerate(autoGenerate)
@@ -99,8 +100,8 @@ func runServer(cmd *cobra.Command, args []string) {
 		cfg.IPWhitelist = ipWhitelist
 	}
 
-	// 验证鉴权配置（现在应该总是有API Key，因为会自动生成）
-	if cfg.APIKey == "" && len(cfg.IPWhitelist) == 0 {
+	// 验证鉴权配置（仅在未禁用认证时）
+	if !cfg.DisableAuth && cfg.APIKey == "" && len(cfg.IPWhitelist) == 0 {
 		color.Red("❌ 未配置任何鉴权方式，请配置API Key或IP白名单")
 		color.Yellow("   • API Key: 通过 --api-key 参数或 OAUTH_PROXY_API_KEY 环境变量设置")
 		color.Yellow("   • IP白名单: 通过 --ip-whitelist 参数或 OAUTH_PROXY_IP_WHITELIST 环境变量设置")
@@ -141,17 +142,21 @@ func runServer(cmd *cobra.Command, args []string) {
 	color.White("📍 监听地址: http://localhost:%s", cfg.Port)
 
 	// 显示鉴权配置
-	if cfg.APIKey != "" {
-		color.White("🔑 API Key: %s", cfg.APIKey)
-	}
-	if len(cfg.IPWhitelist) > 0 {
-		color.White("🛡️  IP白名单: %d个规则", len(cfg.IPWhitelist))
-		for i, ip := range cfg.IPWhitelist {
-			if i < 3 { // 只显示前3个
-				color.White("   • %s", ip)
-			} else if i == 3 {
-				color.White("   • ... 还有%d个", len(cfg.IPWhitelist)-3)
-				break
+	if cfg.DisableAuth {
+		color.Yellow("⚠️  认证已禁用 - 所有请求都将被允许")
+	} else {
+		if cfg.APIKey != "" {
+			color.White("🔑 API Key: %s", cfg.APIKey)
+		}
+		if len(cfg.IPWhitelist) > 0 {
+			color.White("🛡️  IP白名单: %d个规则", len(cfg.IPWhitelist))
+			for i, ip := range cfg.IPWhitelist {
+				if i < 3 { // 只显示前3个
+					color.White("   • %s", ip)
+				} else if i == 3 {
+					color.White("   • ... 还有%d个", len(cfg.IPWhitelist)-3)
+					break
+				}
 			}
 		}
 	}

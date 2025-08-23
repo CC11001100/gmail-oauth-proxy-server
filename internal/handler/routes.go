@@ -2,6 +2,7 @@ package handler
 
 import (
 	"gmail-oauth-proxy-server/internal/config"
+	"gmail-oauth-proxy-server/internal/logger"
 	"gmail-oauth-proxy-server/internal/middleware"
 	"net/http"
 
@@ -26,15 +27,20 @@ func RegisterRoutes(r *gin.Engine, cfg *config.Config) {
 		})
 	})
 
-	// API路由组（需要认证）
+	// API路由组
 	api := r.Group("/")
 	{
-		// 添加统一鉴权中间件
-		authConfig := middleware.AuthConfig{
-			APIKey:      cfg.APIKey,
-			IPWhitelist: cfg.IPWhitelist,
+		// 添加统一鉴权中间件（仅在未禁用认证时）
+		if !cfg.DisableAuth {
+			logger.Info("🔒 启用认证中间件")
+			authConfig := middleware.AuthConfig{
+				APIKey:      cfg.APIKey,
+				IPWhitelist: cfg.IPWhitelist,
+			}
+			api.Use(middleware.UnifiedAuth(authConfig))
+		} else {
+			logger.Info("⚠️  认证已禁用 - 所有请求都将被允许")
 		}
-		api.Use(middleware.UnifiedAuth(authConfig))
 		// 添加请求日志中间件
 		api.Use(middleware.RequestLogger())
 
